@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>TransportX — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="phone">
+  <main id="app">
+
+    <!-- ========== 1. HOME ========== -->
+    <section class="screen active" id="screen-home" data-tabbar="true">
+      <header class="topbar">
+        <span class="brand">TransportX</span>
+        <span class="pill">Agri logistics</span>
+      </header>
+
+      <div class="screen-body">
+        <div class="hero">
+          <svg class="hero-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+          <h1>Kualitas hasil panen, terjaga sampai tujuan.</h1>
+          <p>Gudang dan cold storage sendiri untuk kopi, rempah, dan hasil panen Anda.</p>
+        </div>
+
+        <button class="btn btn-accent btn-wide" data-go="input">
+          <span>Cek pengiriman baru</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="duo">
+          <div class="mini-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 1 1 4 0z"/></svg>
+            <strong>Full Managed</strong>
+            <span>Kami urus packaging dan pengiriman</span>
+          </div>
+          <div class="mini-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg>
+            <strong>Self-Packaging</strong>
+            <span>Anda packing, kami carikan ekspedisi</span>
+          </div>
+        </div>
+
+        <h2 class="section-label">Kenapa TransportX</h2>
+        <ul class="why-list">
+          <li>
+            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 1 1 4 0z"/></svg></span>
+            <div><strong>Kontrol suhu dan kelembaban</strong><p>Gudang dan armada sesuai standar tiap komoditas.</p></div>
+          </li>
+          <li>
+            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
+            <div><strong>Dua pilihan layanan</strong><p>Kami urus penuh, atau Anda packing sendiri dengan panduan kami.</p></div>
+          </li>
+          <li>
+            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+            <div><strong>Biaya jelas sejak awal</strong><p>Rincian biaya dan status pengiriman bisa dicek kapan saja.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 2. INPUT DATA ========== -->
+    <section class="screen" id="screen-input">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Data pengiriman</span>
+      </header>
+
+      <div class="screen-body">
+        <div class="field">
+          <label for="f-komoditas">Jenis komoditas</label>
+          <div class="select-wrap">
+            <select id="f-komoditas"></select>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-berat">Berat (kg)</label>
+          <input id="f-berat" type="number" min="1" inputmode="numeric" placeholder="Contoh: 500">
+          <div class="chips" id="berat-chips">
+            <button type="button" class="chip" data-berat="100">100 kg</button>
+            <button type="button" class="chip" data-berat="250">250 kg</button>
+            <button type="button" class="chip" data-berat="500">500 kg</button>
+            <button type="button" class="chip" data-berat="1000">1 ton</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-asal">Kota asal</label>
+          <div class="combo" id="combo-asal">
+            <input id="f-asal" type="text" autocomplete="off" placeholder="Cari kota atau sentra produksi"
+                   role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="list-asal">
+            <svg class="combo-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            <ul class="combo-list" id="list-asal" role="listbox" aria-label="Pilihan kota asal"></ul>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-tujuan">Kota tujuan</label>
+          <div class="combo" id="combo-tujuan">
+            <input id="f-tujuan" type="text" autocomplete="off" placeholder="Cari kota tujuan"
+                   role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="list-tujuan">
+            <svg class="combo-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            <ul class="combo-list" id="list-tujuan" role="listbox" aria-label="Pilihan kota tujuan"></ul>
+          </div>
+        </div>
+
+        <div class="callout">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+          <p>Panduan packaging dan estimasi biaya akan menyesuaikan jenis komoditas yang Anda pilih.</p>
+        </div>
+      </div>
+
+      <footer class="screen-footer">
+        <button class="btn btn-primary btn-wide" id="btn-input-next">Lanjutkan</button>
+      </footer>
+    </section>
+
+    <!-- ========== 3. PILIH LAYANAN ========== -->
+    <section class="screen" id="screen-layanan">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Pilih layanan</span>
+      </header>
+
+      <div class="screen-body">
+        <div class="summary-card" id="layanan-summary"></div>
+
+        <p class="lead">Mau packaging diurus siapa?</p>
+
+        <button class="option-card" data-go="managed">
+          <span class="option-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg></span>
+          <span class="option-text">
+            <strong>Full Managed</strong>
+            <span>Kirim barang ke gudang kami. Packing, penyimpanan, dan pengiriman kami yang urus.</span>
+            <em id="price-managed"></em>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <button class="option-card" data-go="self">
+          <span class="option-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
+          <span class="option-text">
+            <strong>Self-Packaging</strong>
+            <span>Anda packing sendiri dengan panduan kami, lalu pilih ekspedisi yang sesuai.</span>
+            <em id="price-self"></em>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== 4A. FULL MANAGED ========== -->
+    <section class="screen" id="screen-managed">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Full Managed</span>
+      </header>
+
+      <div class="screen-body" id="managed-content"></div>
+
+      <footer class="screen-footer">
+        <div class="total-row"><span>Total estimasi</span><strong id="managed-total"></strong></div>
+        <button class="btn btn-primary btn-wide" id="btn-confirm-managed">Konfirmasi pengiriman</button>
+      </footer>
+    </section>
+
+    <!-- ========== 4B. SELF-PACKAGING (halaman baru) ========== -->
+    <section class="screen" id="screen-self">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Self-Packaging</span>
+      </header>
+
+      <div class="stepper" aria-label="Langkah self-packaging">
+        <div class="step" data-step="1"><span>1</span>Panduan</div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2"><span>2</span>Checklist</div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3"><span>3</span>Ekspedisi</div>
+      </div>
+
+      <div class="screen-body">
+        <!-- Langkah 1: panduan -->
+        <h2 class="section-label">Standar untuk <span id="self-komoditas-name"></span></h2>
+        <div class="spec-grid" id="self-spec"></div>
+
+        <h3 class="sub-label">Bahan yang perlu disiapkan</h3>
+        <ul class="material-list" id="self-materials"></ul>
+
+        <!-- Langkah 2: checklist -->
+        <h2 class="section-label">Checklist packing</h2>
+        <p class="hint">Centang setiap langkah setelah selesai dikerjakan.</p>
+        <div class="progress"><div class="progress-bar" id="self-progress"></div></div>
+        <ul class="checklist" id="self-checklist"></ul>
+
+        <!-- Langkah 3: ekspedisi -->
+        <h2 class="section-label">Pilih ekspedisi</h2>
+        <p class="hint" id="self-exp-hint"></p>
+        <div class="exp-list" id="self-expedisi" role="radiogroup" aria-label="Pilihan ekspedisi"></div>
+
+        <div class="cost-card" id="self-cost"></div>
+        <div id="self-value"></div>
+      </div>
+
+      <footer class="screen-footer">
+        <p class="footer-note" id="self-footer-note"></p>
+        <button class="btn btn-primary btn-wide" id="btn-confirm-self" disabled>Konfirmasi pengiriman</button>
+      </footer>
+    </section>
+
+    <!-- ========== 5. RINGKASAN ========== -->
+    <section class="screen" id="screen-ringkasan">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Ringkasan pengiriman</span>
+      </header>
+
+      <div class="screen-body" id="ringkasan-content"></div>
+
+      <footer class="screen-footer">
+        <button class="btn btn-ghost btn-wide" id="btn-home">Kembali ke Home</button>
+      </footer>
+    </section>
+
+    <!-- ========== 6. RIWAYAT ========== -->
+    <section class="screen" id="screen-riwayat" data-tabbar="true">
+      <header class="topbar">
+        <span class="title">Riwayat pengiriman</span>
+      </header>
+      <div class="screen-body" id="riwayat-list"></div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab active" data-tab="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button class="tab" data-tab="riwayat">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Riwayat
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

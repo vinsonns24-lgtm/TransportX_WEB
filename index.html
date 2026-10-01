@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TransportX — Logistik Komoditas Pertanian</title>
+<meta name="description" content="TransportX menghubungkan petani dan pengepul ke gudang, cold storage, dan ekspedisi yang paham cara menangani kopi, rempah, dan hasil panen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+<nav class="nav" aria-label="Navigasi utama">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="TransportX, kembali ke atas">
+      <svg width="30" height="30" viewBox="0 0 240 240" aria-hidden="true"><circle cx="55" cy="55" r="8" fill="none" stroke="#fff" stroke-width="9"/><circle cx="185" cy="55" r="8" fill="none" stroke="#fff" stroke-width="9"/><circle cx="55" cy="185" r="8" fill="none" stroke="#fff" stroke-width="9"/><circle cx="185" cy="185" r="8" fill="none" stroke="#fff" stroke-width="9"/><path d="M55,55 Q150,90 185,185" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/><path d="M185,55 Q90,150 55,185" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="121" cy="121" r="21" fill="#D98354"/></svg>
+      TransportX
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#masalah">Masalah</a></li>
+      <li><a href="#cara-kerja">Cara kerja</a></li>
+      <li><a href="#layanan">Layanan</a></li>
+      <li><a href="#tim">Tim</a></li>
+      <li class="nav-cta-mobile"><a class="btn btn-clay" href="prototipe/" target="_blank" rel="noopener">Coba prototipe</a></li>
+    </ul>
+    <div class="nav-right">
+      <a class="btn btn-clay nav-cta" href="prototipe/" target="_blank" rel="noopener">Coba prototipe</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Logistik komoditas pertanian</p>
+      <h1>Panen sudah bagus.<span>Jangan rusak di jalan.</span></h1>
+      <p class="lead">TransportX menghubungkan petani, pengepul, dan koperasi ke gudang, cold storage, dan ekspedisi partner yang paham cara menangani kopi, rempah, dan hasil panen.</p>
+      <div class="hero-cta">
+        <a class="btn btn-clay" href="prototipe/" target="_blank" rel="noopener">Coba prototipe
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="btn btn-line" href="#cara-kerja">Lihat cara kerjanya</a>
+      </div>
+      <div class="tiles" aria-label="Contoh standar penanganan">
+        <div class="tile"><div class="k"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 1 1 4 0z"/></svg>Biji kopi</div><div class="v">&lt;25°C</div><div class="d">suhu simpan</div></div>
+        <div class="tile"><div class="k"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5s6 7.5 6 12a6 6 0 0 1-12 0c0-4.5 6-12 6-12z"/></svg>Rempah</div><div class="v">&lt;60%</div><div class="d">kelembapan</div></div>
+        <div class="tile"><div class="k"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4.9 6l14.2 12M19.1 6L4.9 18"/></svg>Panen segar</div><div class="v">2–8°C</div><div class="d">rantai dingin</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone">
+        <div class="screen">
+          <div class="sb"><span>9:41</span><i></i></div>
+          <img src="assets/mockup-layanan.png" width="560" height="1211" loading="eager" alt="Layar Pilih layanan di aplikasi TransportX, menampilkan opsi Full Managed dan Self-Packaging beserta estimasi biaya">
+          <div class="notch"></div>
+        </div>
+        <div class="float f1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Sesuai standar kopi</div>
+        <div class="float f2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 6h13v10H1z"/><path d="M14 9h4l3 3v4h-7"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg>Ekspedisi terpilih</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section class="problem" id="masalah">
+  <div class="wrap">
+    <p class="eyebrow">Masalahnya</p>
+    <h2>Barangnya sampai. Kualitasnya yang nggak.</h2>
+    <div class="prob-grid reveal">
+      <div>
+        <div class="big">20%+</div>
+        <p class="big-cap">hasil panen bisa hilang setelah dipanen, sebagian besar <b>saat disimpan, diolah, dan dikirim</b>, bukan di kebun.</p>
+        <div class="pair">
+          <div class="stat"><strong>1,86 jt</strong><span>keluarga petani kopi di Indonesia</span></div>
+          <div class="stat"><strong>756 rb ton</strong><span>produksi kopi nasional 2023</span></div>
+        </div>
+        <p class="src">Sumber: Kemenko Bidang Perekonomian (2018); BPS via CNBC Indonesia (2024).</p>
+      </div>
+      <div class="notifs" aria-label="Contoh komplain pembeli">
+        <div class="nt"><div class="av" style="background:#2F6B4F">R</div><div><div class="nt-top"><b>Roastery, Jakarta</b><span>2 mnt</span></div><p>Kopinya bau apek, kayaknya kena lembap di jalan. Harganya kami turunkan ya.</p></div></div>
+        <div class="nt"><div class="av" style="background:#B8683F">T</div><div><div class="nt-top"><b>Toko Rempah, Surabaya</b><span>1 jam</span></div><p>Cengkehnya sebagian berjamur, nggak bisa dijual semua.</p></div></div>
+        <div class="nt"><div class="av" style="background:#4E7560">D</div><div><div class="nt-top"><b>Dapur Resto, Bandung</b><span>Kemarin</span></div><p>Sayurnya layu waktu sampai. Kami retur dulu ya.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="cara-kerja">
+  <div class="wrap">
+    <p class="eyebrow">Cara kerja</p>
+    <h2>Tiga langkah, standar yang sama di setiap pengiriman.</h2>
+    <div class="steps reveal">
+      <div class="step"><div class="n">01</div><h3>Isi data kiriman</h3><p>Pilih jenis komoditas, berat, kota asal, dan tujuan. Sistem langsung menampilkan standar penanganannya.</p></div>
+      <div class="step"><div class="n">02</div><h3>Pilih layanannya</h3><p>Serahkan ke gudang partner dengan Full Managed, atau packing sendiri dengan panduan Self-Packaging.</p></div>
+      <div class="step"><div class="n">03</div><h3>Pantau sampai tiba</h3><p>Rincian biaya muncul sebelum konfirmasi, lalu status pengiriman bisa dicek di setiap tahap.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="layanan">
+  <div class="wrap">
+    <p class="eyebrow">Layanan</p>
+    <h2>Kamu yang pilih siapa yang urus packing-nya.</h2>
+    <div class="svc-grid reveal">
+      <article class="svc svc-a">
+        <span class="tag">Diurus partner</span>
+        <h3>Full Managed</h3>
+        <p>Antar barang ke gudang partner terdekat. Sisanya kami koordinasikan.</p>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Packing oleh gudang partner sesuai SOP tiap komoditas</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Penyimpanan sementara di fasilitas bersuhu terkontrol</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Ekspedisi dipilihkan otomatis, termasuk rantai dingin bila perlu</li>
+        </ul>
+        <p class="for">Cocok untuk koperasi dan pengepul dengan volume besar.</p>
+      </article>
+      <article class="svc svc-b">
+        <span class="tag">Urus sendiri</span>
+        <h3>Self-Packaging</h3>
+        <p>Packing sendiri dengan panduan kami, lalu pilih ekspedisi yang sesuai.</p>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Panduan suhu, kelembapan, dan bahan packing per komoditas</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Checklist packing langkah demi langkah</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Hanya ekspedisi yang sanggup menangani komoditasmu yang muncul</li>
+        </ul>
+        <p class="for">Cocok untuk petani yang sudah terbiasa packing sendiri.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- STANDARDS -->
+<section class="std" id="standar">
+  <div class="wrap">
+    <p class="eyebrow">Standar penanganan</p>
+    <h2>Tiap komoditas punya aturannya sendiri.</h2>
+    <p class="lead">Standar ini dipakai sebagai dasar SOP partner (Full Managed) dan panduan packing (Self-Packaging). Angka akan terus divalidasi bersama petani dan partner.</p>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th scope="col">Komoditas</th><th scope="col">Suhu</th><th scope="col">Kelembapan</th><th scope="col">Packing utama</th><th scope="col">Ekspedisi</th></tr></thead>
+        <tbody>
+          <tr><td>Biji kopi (green bean)</td><td>&lt; 25°C</td><td>50–60% RH</td><td>Karung goni + hermetic bag</td><td>Reguler</td></tr>
+          <tr><td>Rempah kering</td><td>Suhu ruang</td><td>&lt; 60% RH</td><td>Vacuum seal + silica gel</td><td>Reguler</td></tr>
+          <tr><td>Hasil panen segar</td><td>2–8°C</td><td>85–95% RH</td><td>Styrofoam box + ice gel</td><td><span class="pill">Rantai dingin</span></td></tr>
+          <tr><td>Biji kakao</td><td>&lt; 25°C</td><td>&lt; 65% RH</td><td>Karung berlapis di atas pallet</td><td>Reguler</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section class="promise">
+  <div class="wrap">
+    <p class="eyebrow">Komitmen kami</p>
+    <h2>Kami urus pengirimannya, bukan jual-beli panenmu.</h2>
+    <div class="pr-grid reveal">
+      <div class="pr"><div class="icw"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Biaya terlihat di awal</h3><p>Rincian ongkos muncul sebelum kamu konfirmasi.</p></div>
+      <div class="pr"><div class="icw"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Partner dicek standarnya</h3><p>Gudang dan ekspedisi mengikuti SOP per komoditas.</p></div>
+      <div class="pr"><div class="icw"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></div><h3>Pembeli tetap milikmu</h3><p>Kami bukan marketplace, juga bukan tengkulak.</p></div>
+      <div class="pr"><div class="icw"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8"/><path d="M12 13L6 7"/><path d="M12 13l6-6"/><path d="M6 11V7h4"/><path d="M18 11V7h-4"/></svg></div><h3>Kamu yang pilih caranya</h3><p>Urus sendiri, atau serahkan ke partner kami.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="tim">
+  <div class="wrap">
+    <p class="eyebrow">Tim</p>
+    <h2>Dibangun oleh mahasiswa BINUS.</h2>
+    <p class="lead">TransportX adalah proyek mata kuliah Venture Creation yang sedang memasuki tahap tes pasar.</p>
+    <div class="tm-grid reveal">
+      <div class="tm"><div class="ph">R</div><b>Ryan Christopher Setiawan</b><span class="role">CEO</span><p>Visi bisnis dan kerja sama partner.</p></div>
+      <div class="tm"><div class="ph">S</div><b>Sebastian</b><span class="role">COO</span><p>Operasional, koordinasi partner, dan tes pasar.</p></div>
+      <div class="tm"><div class="ph">V</div><b>Vinson Nicholas Sorensen</b><span class="role">CTO</span><p>Pengembangan aplikasi dan UI/UX.</p></div>
+      <div class="tm"><div class="ph">K</div><b>Kelvine Thomas Tedjokusumo</b><span class="role">CFO</span><p>Model biaya, pendapatan, dan proyeksi keuangan.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <p class="eyebrow">Uji coba terbatas</p>
+    <h2>Coba alurnya sendiri dalam dua menit.</h2>
+    <p class="lead">Prototipe bisa dibuka langsung dari HP. Tidak ada pembayaran dan tidak ada barang yang benar-benar dikirim.</p>
+    <div class="hero-cta">
+      <a class="btn btn-clay" href="prototipe/" target="_blank" rel="noopener">Buka prototipe
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-line" href="https://instagram.com/transportx.id" target="_blank" rel="noopener">Ikuti di Instagram</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> TransportX. Proyek Venture Creation, BINUS University.</span>
+    <div class="soc">
+      <a href="https://instagram.com/transportx.id" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com/@transportx.id" target="_blank" rel="noopener">TikTok</a>
+      <a href="prototipe/" target="_blank" rel="noopener">Prototipe</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>
