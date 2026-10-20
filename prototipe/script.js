@@ -276,6 +276,7 @@ function hitungSelf(r) {
 
 function rincianHTML(rincian, total) {
   return `
+    ${grafikBiaya(rincian)}
     <div class="breakdown">
       ${rincian.map(([l, v]) => `<div><span>${escapeHTML(l)}</span><strong>${rupiah(v)}</strong></div>`).join('')}
       <div class="breakdown-total"><span>Total</span><strong>${rupiah(total)}</strong></div>
@@ -465,6 +466,8 @@ function validasiInput() {
 function renderLayanan() {
   const s = state.shipment;
   const k = komoditas();
+  $('#layanan-peta').innerHTML = `${petaRute({ asal: s.asal, tujuan: s.tujuan })}
+    <p class="route-note">Full Managed lewat gudang mitra ${GUDANG}. Self-Packaging dijemput ekspedisi langsung dari ${escapeHTML(s.asal)}.</p>`;
   $('#layanan-summary').innerHTML = `
     <div><span>Komoditas</span><strong>${k.nama}</strong></div>
     <div><span>Berat</span><strong>${s.berat.toLocaleString('id-ID')} kg</strong></div>
@@ -499,6 +502,7 @@ function renderManaged() {
     </button>`;
 
   $('#managed-content').innerHTML = `
+    ${langkahHTML(2)}
     <h2 class="section-label">Barang diserahkan dengan cara</h2>
     <div class="choice-list" role="radiogroup" aria-label="Cara serah barang">
       <button class="choice ${state.managed.serah === 'antar' ? 'selected' : ''}" data-serah="antar" role="radio" aria-checked="${state.managed.serah === 'antar'}">
@@ -652,6 +656,8 @@ function renderBayar() {
   const d = state.draft;
   const s = state.shipment;
   $('#bayar-content').innerHTML = `
+    ${langkahHTML(3)}
+    <div class="route-card">${petaRute({ asal: s.asal, tujuan: s.tujuan, layanan: d.layanan })}</div>
     <div class="pay-card">
       <div class="pay-row"><span>Layanan</span><strong>${d.layanan}</strong></div>
       <div class="pay-row"><span>Barang</span><strong>${komoditas().nama}, ${s.berat.toLocaleString('id-ID')} kg</strong></div>
@@ -789,6 +795,8 @@ function renderRingkasan(d) {
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
       <div><strong>${sekarang.judul}</strong><span>${sekarang.lokasi ? escapeHTML(sekarang.lokasi) + ' · ' : ''}Penanggung jawab: ${sekarang.oleh}</span></div>
     </div>
+
+    <div class="route-card">${petaRute({ asal: d.asal, tujuan: d.tujuan, layanan: d.layanan, posisi: posisiTahap(d) })}</div>
 
     <div class="btn-row">
       <button class="btn btn-ghost" id="btn-share">Bagikan link lacak</button>
@@ -1168,8 +1176,8 @@ muatDariStorage();
 muatFeedback();
 isiDropdownKomoditas();
 buatCombo('combo-asal', {
-  daftar: KOTA_ASAL, sentraDulu: true, onPilih: tampilkanHub,
+  daftar: KOTA_ASAL, sentraDulu: true, onPilih: (k) => { tampilkanHub(k); perbaruiPetaInput(); },
   kosong: `Belum dilayani. Saat ini barang hanya diambil dari ${WILAYAH_ASAL}.`
 });
-buatCombo('combo-tujuan', { daftar: [...KOTA.filter((k) => !k.asal), ...KOTA_ASAL], kosong:'Belum dilayani. Tujuan pengiriman saat ini kota-kota di Pulau Jawa.' });
+buatCombo('combo-tujuan', { daftar: [...KOTA.filter((k) => !k.asal), ...KOTA_ASAL], onPilih: () => perbaruiPetaInput(), kosong:'Belum dilayani. Tujuan pengiriman saat ini kota-kota di Pulau Jawa.' });
 show('home');

@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="visual.css">
 </head>
 <body>
 
@@ -41,6 +42,9 @@
             <button class="btn btn-primary" type="submit">Lacak</button>
           </div>
         </form>
+
+        <h2 class="section-label">Wilayah layanan</h2>
+        <div class="coverage-card" id="home-peta"></div>
 
         <h2 class="section-label">Kenapa TransportX</h2>
         <ul class="why-list">
@@ -77,6 +81,10 @@
       </header>
 
       <div class="screen-body">
+        <div data-langkah="1"></div>
+
+        <section class="form-card">
+        <h2 class="form-title"><span>1</span>Barang yang dikirim</h2>
         <div class="field">
           <label for="f-komoditas">Jenis komoditas</label>
           <div class="select-wrap">
@@ -84,6 +92,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </div>
           <p class="field-help" id="komoditas-help"></p>
+          <div id="komoditas-skala"></div>
         </div>
 
         <div class="field">
@@ -103,7 +112,10 @@
           <input id="f-nilai" type="text" inputmode="numeric" placeholder="Contoh: 25.000.000">
           <p class="field-help">Dipakai sebagai dasar klaim kalau barang rusak atau hilang. Isi sesuai harga jual barang Anda.</p>
         </div>
+        </section>
 
+        <section class="form-card">
+        <h2 class="form-title"><span>2</span>Rute pengiriman</h2>
         <div class="field">
           <label for="f-asal">Kota asal</label>
           <div class="combo" id="combo-asal">
@@ -127,6 +139,9 @@
           </div>
           <p class="field-help">Tujuan pengiriman: kota-kota di Pulau Jawa. Kota tujuan tidak ada di daftar? Pilih kota terdekat.</p>
         </div>
+
+        <div class="route-preview" id="input-peta" hidden></div>
+        </section>
       </div>
 
       <footer class="screen-footer">
@@ -143,6 +158,8 @@
       </header>
 
       <div class="screen-body">
+        <div data-langkah="2"></div>
+        <div class="route-card" id="layanan-peta"></div>
         <div class="summary-card" id="layanan-summary"></div>
 
         <p class="lead">Mau dikemas oleh siapa?</p>
@@ -532,5 +549,6 @@
 </div>
 
 <script src="script.js"></script>
+<script src="visual.js"></script>
 </body>
 </html>

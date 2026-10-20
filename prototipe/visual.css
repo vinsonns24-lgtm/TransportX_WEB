@@ -1,0 +1,212 @@
+/* =========================================================
+   TransportX — gaya visualisasi dan polesan UI
+   (peta rute, grafik biaya, skala suhu, penanda langkah, form)
+   Warna grafik biaya lolos cek palet dataviz (CVD ΔE 14.5). Oranye di bawah 3:1
+   terhadap putih, jadi setiap bagian selalu diberi label dan angka.
+   ========================================================= */
+:root {
+  --viz-tx: #15803D;
+  --viz-mitra: #FB923C;
+  --map-land: #EDF1EF;
+  --map-coast: #D3DBD7;
+  --map-region: #DCFCE7;
+  --map-region-line: #4ADE80;
+}
+
+/* ---- hero dan form ---- */
+/* flex-shrink: 0 — dengan overflow:hidden, kartu di kolom flex bisa menyusut dan teksnya terpotong */
+.hero { background: linear-gradient(140deg, var(--primary) 0%, #14532D 100%); position: relative; overflow: hidden; flex-shrink: 0; }
+.hero::after {
+  content: ""; position: absolute; right: -50px; top: -50px;
+  width: 170px; height: 170px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08); pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
+
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.form-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+.form-title span {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+/* ---- penanda langkah ---- */
+.flow { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 6px; }
+.flow li { flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0; font-size: 12.5px; font-weight: 500; color: var(--muted); }
+.flow li:last-child { flex: 0 1 auto; }
+.flow li:not(:last-child)::after { content: ""; flex: 1; min-width: 8px; height: 1.5px; background: var(--border); }
+.flow li.done:not(:last-child)::after { background: var(--primary); }
+.flow b {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  display: grid; place-items: center;
+  font-size: 12px;
+}
+.flow b svg { width: 12px; height: 12px; stroke-width: 3; }
+.flow li span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.flow li.now { color: var(--ink); font-weight: 600; }
+.flow li.now b { background: var(--primary); border-color: var(--primary); color: #fff; }
+.flow li.done b { background: var(--primary-soft); border-color: var(--primary-soft); color: var(--primary-dark); }
+@media (max-width: 440px) { .flow li:not(.now) span { display: none; } }
+
+/* ---- kartu peta ---- */
+.coverage-card, .route-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 14px;
+}
+.route-preview { background: var(--bg); border-radius: 10px; padding: 4px 10px; }
+.route-note { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: var(--muted); }
+
+.peta {
+  position: relative; width: 100%; aspect-ratio: 2.4; margin: 0 0 6px;
+  border-radius: 10px; background: #EAF4F7; /* laut */
+}
+.peta > svg { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 10px; }
+.peta-darat { fill: var(--map-land); stroke: var(--map-coast); stroke-width: 1; }
+.peta-jateng { fill: var(--map-region); stroke: var(--map-region-line); stroke-width: 1; stroke-dasharray: 3 3; }
+.rute-dasar { fill: none; stroke: #A3B1AA; stroke-width: 2; stroke-dasharray: 4 5; }
+.rute-isi { fill: none; stroke: var(--primary); stroke-width: 2.6; stroke-linecap: round; }
+
+.peta-pin, .peta-titik, .peta-truk { position: absolute; transform: translate(-50%, -50%); }
+.peta-pin {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--primary-dark);
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 2px #fff;
+  z-index: 2;
+}
+.peta-pin svg { width: 15px; height: 15px; stroke-width: 2; }
+.peta-titik { width: 12px; height: 12px; padding: 0; border: none; border-radius: 50%; z-index: 1; }
+.peta-titik.asal { background: var(--primary); box-shadow: 0 0 0 2px #fff; }
+.peta-titik.tujuan { background: #fff; border: 3px solid var(--accent-bright); box-shadow: 0 0 0 1.5px #fff; }
+.peta-titik.kecil { width: 10px; height: 10px; }
+.peta-titik.kecil.tujuan { border-width: 2.5px; }
+button.peta-titik { cursor: pointer; }
+button.peta-titik::before { content: ""; position: absolute; inset: -9px; border-radius: 50%; } /* area sentuh 28px */
+.peta-truk {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 3px #fff, 0 4px 10px rgba(15, 23, 42, 0.25);
+  z-index: 3;
+}
+.peta-truk svg { width: 15px; height: 15px; stroke-width: 2; }
+
+.lbl {
+  position: absolute;
+  white-space: nowrap;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1px 6px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+.lbl.atas { bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%); }
+.lbl.atas.ujung-kanan { left: auto; right: -4px; transform: none; }
+.lbl.atas.ujung-kiri { left: -4px; transform: none; }
+.lbl.kiri { right: calc(100% + 6px); top: 50%; transform: translateY(-50%); }
+.lbl.kanan { left: calc(100% + 6px); top: 50%; transform: translateY(-50%); }
+
+/* tooltip saat disentuh atau di-hover */
+.seg[data-tip] { position: relative; }
+[data-tip]:hover::after, [data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 5px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}
+.peta [data-tip]:hover, .peta [data-tip]:focus-visible { z-index: 9; }
+
+.peta-legenda { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--ink-soft); }
+.peta-legenda li { display: flex; align-items: center; gap: 6px; }
+.lg-area { width: 14px; height: 10px; border-radius: 3px; background: var(--map-region); border: 1px dashed var(--map-region-line); }
+.lg-titik { width: 10px; height: 10px; border-radius: 50%; box-sizing: border-box; }
+.lg-titik.asal { background: var(--primary); }
+.lg-titik.tujuan { border: 2.5px solid var(--accent-bright); }
+.lg-pin { width: 16px; height: 16px; border-radius: 5px; background: var(--primary-dark); color: #fff; display: grid; place-items: center; }
+.lg-pin svg { width: 11px; height: 11px; stroke-width: 2.2; }
+
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.stat-row div { background: var(--bg); border-radius: 10px; padding: 10px 11px; display: flex; flex-direction: column; gap: 2px; }
+.stat-row strong { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--primary-dark); }
+.stat-row span { font-size: 12px; line-height: 1.3; color: var(--ink-soft); }
+
+/* ---- grafik pembagian biaya ---- */
+.biaya-viz { display: flex; flex-direction: column; gap: 10px; margin: 2px 0 6px; }
+.biaya-bar { display: flex; gap: 2px; height: 14px; }
+.biaya-bar .seg { min-width: 6px; border-radius: 2px; outline-offset: 2px; }
+.biaya-bar .seg:first-child { border-radius: 4px 2px 2px 4px; }
+.biaya-bar .seg:last-child { border-radius: 2px 4px 4px 2px; }
+.biaya-bar .seg:only-child { border-radius: 4px; }
+.seg.mitra, .sw.mitra { background: var(--viz-mitra); }
+.seg.tx, .sw.tx { background: var(--viz-tx); }
+.biaya-legenda { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.biaya-legenda li { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: center; font-size: 13.5px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; }
+.lg-teks strong { display: block; font-weight: 600; }
+.lg-teks small, .lg-nilai small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+.lg-nilai { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---- skala suhu simpan ---- */
+.suhu { margin-top: 4px; padding: 14px 14px 10px; background: var(--bg); border-radius: 10px; }
+.suhu-track { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #DBEAFE, #EEF2EF 55%, #FFEDD5); }
+.suhu-pita { position: absolute; top: -4px; height: 18px; min-width: 8px; border-radius: 5px; background: rgba(15, 23, 42, 0.16); }
+.suhu-pita.on { background: var(--primary); box-shadow: 0 0 0 2px #fff; }
+.suhu-sumbu { display: flex; justify-content: space-between; margin-top: 7px; font-size: 11px; color: var(--muted); }
+.suhu-label { position: relative; height: 32px; margin-top: 4px; }
+.suhu-label span { position: absolute; transform: translateX(-50%); text-align: center; white-space: nowrap; font-size: 11.5px; line-height: 1.25; color: var(--muted); }
+.suhu-label span:first-child { transform: none; left: 0 !important; text-align: left; }
+.suhu-label span.on { color: var(--primary-dark); font-weight: 600; }
+.suhu-label small { display: block; font-size: 11px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .peta-truk { animation: denyut 2.4s ease-in-out infinite; }
+}
+@keyframes denyut {
+  0%, 100% { box-shadow: 0 0 0 3px #fff, 0 0 0 3px rgba(249, 115, 22, 0.35); }
+  50% { box-shadow: 0 0 0 3px #fff, 0 0 0 9px rgba(249, 115, 22, 0); }
+}

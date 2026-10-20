@@ -1,17 +1,22 @@
 /* ===================== TOKENS ===================== */
 :root {
-  --bg: #F6F5EF;
+  /* Tema: hijau segar + putih. Hijau/oranye untuk teks dan tombol sudah dicek kontrasnya
+     terhadap putih (>= 4.5:1); versi "-bright" hanya untuk hiasan, peta, dan ikon. */
+  --bg: #F7F9F8;
   --surface: #FFFFFF;
-  --border: #E3E0D4;
-  --ink: #1E231C;
-  --ink-soft: #5F6457;
-  --muted: #8E9283;
-  --primary: #2F6B4F;
-  --primary-dark: #234F3A;
-  --primary-soft: #E3EFE7;
-  --accent: #B8683F;
-  --accent-soft: #F5E6DB;
-  --danger: #A63D2F;
+  --border: #E2E8E5;
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --muted: #64748B;
+  --primary: #15803D;
+  --primary-dark: #166534;
+  --primary-bright: #16A34A;
+  --primary-soft: #DCFCE7;
+  --accent: #C2410C;
+  --accent-btn: #D2470E;
+  --accent-bright: #F97316;
+  --accent-soft: #FFEDD5;
+  --danger: #B91C1C;
 
   --r-sm: 8px;
   --r-md: 12px;
@@ -29,7 +34,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--ink);
-  background: #DCDBD2;
+  background: #E3E9E6;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -56,7 +61,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 0 1px var(--border), 0 20px 50px -20px rgba(30, 35, 28, 0.25);
+  box-shadow: 0 0 0 1px var(--border), 0 20px 50px -20px rgba(15, 23, 42, 0.25);
 }
 @media (max-width: 760px) {
   body { background: var(--bg); }
@@ -157,8 +162,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .btn-wide { width: 100%; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover { background: var(--primary-dark); }
-.btn-primary:disabled { background: #B9C2B6; cursor: not-allowed; }
-.btn-accent { background: var(--accent); color: #fff; justify-content: space-between; }
+.btn-primary:disabled { background: #B6C2BC; cursor: not-allowed; }
+.btn-accent { background: var(--accent-btn); color: #fff; justify-content: space-between; }
 .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
 
 /* ===================== HOME ===================== */
@@ -171,7 +176,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   flex-direction: column;
   gap: 12px;
 }
-.hero-icon { width: 30px; height: 30px; stroke: #D7E8DD; stroke-width: 1.6; }
+.hero-icon { width: 30px; height: 30px; stroke: #DCFCE7; stroke-width: 1.6; }
 .hero h1 {
   margin: 0;
   font-family: var(--font-display);
@@ -179,7 +184,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   font-weight: 600;
   line-height: 1.25;
 }
-.hero p { margin: 0; font-size: 14.5px; line-height: 1.5; color: #D7E8DD; }
+.hero p { margin: 0; font-size: 14.5px; line-height: 1.5; color: #DCFCE7; }
 
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mini-card {
@@ -237,7 +242,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   background: var(--surface);
   appearance: none;
 }
-.field input.invalid { border-color: var(--danger); background: #FBF1EF; }
+.field input.invalid { border-color: var(--danger); background: #FEF2F2; }
 .select-wrap { position: relative; }
 .select-wrap svg {
   position: absolute; right: 14px; top: 50%;
@@ -293,7 +298,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  box-shadow: 0 14px 28px -10px rgba(30, 35, 28, 0.28);
+  box-shadow: 0 14px 28px -10px rgba(15, 23, 42, 0.28);
   display: none;
 }
 .combo.open .combo-list { display: block; }
@@ -423,7 +428,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   white-space: nowrap;
 }
 .who-tag.tx { background: var(--primary-soft); color: var(--primary-dark); }
-.who-tag.mitra { background: var(--accent-soft); color: #8A4A28; }
+.who-tag.mitra { background: var(--accent-soft); color: #9A3412; }
 .who-tag.anda { background: var(--bg); color: var(--ink-soft); border: 1px solid var(--border); }
 
 .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
@@ -442,7 +447,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 /* Kartu perlindungan nilai — argumen utama: premi kecil, kerugian dicegah besar */
 .value-card {
   background: var(--primary-soft);
-  border: 1px solid #C8DFD1;
+  border: 1px solid #BBF7D0;
   border-radius: var(--r-md);
   padding: 16px;
   display: flex;
@@ -466,7 +471,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   font-size: 14px;
   line-height: 1.5;
   color: var(--ink-soft);
-  border-top: 1px solid #C8DFD1;
+  border-top: 1px solid #BBF7D0;
   padding-top: 10px;
 }
 .value-note b { color: var(--primary-dark); font-weight: 600; }
@@ -808,7 +813,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   display: grid;
   place-items: center;
 }
-.welcome-mark svg { width: 28px; height: 28px; stroke: #D7E8DD; stroke-width: 1.6; }
+.welcome-mark svg { width: 28px; height: 28px; stroke: #DCFCE7; stroke-width: 1.6; }
 .welcome h1 {
   margin: 0;
   font-family: var(--font-display);
@@ -953,7 +958,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .stat span { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
 
 .panel-actions { display: flex; flex-direction: column; gap: 9px; }
-.btn-ghost.danger { color: var(--danger); border-color: #E8D3CF; }
+.btn-ghost.danger { color: var(--danger); border-color: #FECACA; }
 
 .fb-item {
   background: var(--surface);
@@ -1054,7 +1059,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   font-size: 15.5px;
   background: var(--surface);
 }
-.field input.invalid, .wa-card input.invalid { border-color: var(--danger); background: #FBF1EF; }
+.field input.invalid, .wa-card input.invalid { border-color: var(--danger); background: #FEF2F2; }
 
 .hub-card {
   display: flex;
@@ -1264,7 +1269,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 .track-now svg { width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; }
 .track-now strong { display: block; font-size: 16.5px; }
-.track-now span { font-size: 13.5px; color: #D7E8DD; line-height: 1.45; }
+.track-now span { font-size: 13.5px; color: #DCFCE7; line-height: 1.45; }
 
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .btn-row .btn { flex: 1; padding: 12px 14px; font-size: 14.5px; min-width: 160px; }
@@ -1276,7 +1281,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .photo-img {
   width: 76px; height: 56px;
   border-radius: 8px;
-  background: repeating-linear-gradient(135deg, #E9E5D8 0 8px, #F1EEE4 8px 16px);
+  background: repeating-linear-gradient(135deg, #E5EBE8 0 8px, #EFF3F1 8px 16px);
   border: 1px solid var(--border);
   display: grid;
   place-items: center;
@@ -1289,7 +1294,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .history-item { margin-bottom: 10px; }
 #lacak-list .history-item:last-child, #riwayat-list .history-item:last-child { margin-bottom: 0; }
 
-.btn-ghost.danger { color: var(--danger); border-color: #E8D3CF; }
+.btn-ghost.danger { color: var(--danger); border-color: #FECACA; }
 
 .breakdown div strong { white-space: nowrap; }
 /* input checkbox tersembunyi harus menempel di labelnya, kalau tidak fokusnya menggeser seluruh layar */
