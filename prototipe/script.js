@@ -13,21 +13,72 @@
    Semua harga dan nama mitra masih CONTOH untuk simulasi.
    ========================================================= */
 
+/* ---------- MITRA ----------
+   Satu sumber untuk semua nama mitra di aplikasi (kartu pelaksana, rute, lacak, halaman Mitra).
+   Belum ada perjanjian kerja sama dengan siapa pun.
+   namaContoh: true = nama karangan untuk simulasi, ganti dengan mitra asli setelah ada kerja sama.
+   MGM Bosco Logistics = calon mitra yang disebut di slide Key Partners BMC. */
+const MITRA = [
+  {
+    id: 'lumbung', nama: 'Gudang Lumbung Agro Semarang', label: 'Gudang', jenis: 'gudang', namaContoh: true,
+    kategori: 'Gudang kering ber-AC',
+    area: 'Semarang, dekat jalan tol ke Jakarta dan Surabaya',
+    peran: 'Titik terima barang. Di sini petugas QC TransportX mengecek mutu, mengemas, lalu barang disimpan sampai berangkat.',
+    fasilitas: ['Ruang ber-AC ±20–25°C, kelembapan 50–60%', 'Palet kayu, karung tidak menyentuh lantai', 'Meja cek mutu dan area kemas untuk petugas QC'],
+    dipakai: 'Kopi, rempah, dan kakao kering (Full Managed)',
+    tarif: 'Sewa Rp100/kg per hari'
+  },
+  {
+    id: 'mgm-bosco', nama: 'MGM Bosco Logistics', label: 'Cold storage', jenis: 'gudang', namaContoh: false,
+    kategori: 'Cold storage dan truk berpendingin',
+    area: 'Wilayah Semarang (lokasi ruang dicek saat penawaran)',
+    peran: 'Menyimpan produk segar di ruang sejuk atau chiller, lalu mengangkutnya dengan truk berpendingin.',
+    fasilitas: ['Ruang sejuk 13–15°C untuk buah tropis', 'Chiller 0–2°C untuk sayuran daun', 'Truk berpendingin; data logger suhu dari TransportX ikut di dalam'],
+    dipakai: 'Buah tropis, cabai, dan sayur',
+    tarif: 'Sewa Rp250–300/kg per hari · angkut Rp8.500/kg'
+  },
+  {
+    id: 'trans-jawa', nama: 'Trans Jawa Kargo', label: 'Ekspedisi', jenis: 'ekspedisi', namaContoh: true,
+    kategori: 'Ekspedisi darat',
+    area: 'Semarang ke kota-kota di Pulau Jawa',
+    peran: 'Mengangkut produk kering lewat jalan tol dan mengantar sampai alamat pembeli.',
+    fasilitas: ['Truk boks tertutup, barang tidak kena hujan dan panas langsung', 'Berangkat setiap hari dari Semarang', 'Darat reguler 2–4 hari atau express 1–2 hari'],
+    dipakai: 'Kopi, rempah, dan kakao kering',
+    tarif: 'Reguler Rp3.500/kg · express Rp6.000/kg'
+  },
+  {
+    id: 'kurir-desa', nama: 'Kurir Desa Jateng', label: 'Kurir', jenis: 'kurir', namaContoh: true,
+    kategori: 'Kurir lokal',
+    area: 'Temanggung, Wonosobo, Banjarnegara, Magelang, dan Solo',
+    peran: 'Menjemput barang dari kebun atau gudang petani, lalu membawanya ke gudang mitra di Semarang.',
+    fasilitas: ['Pikap dan motor barang', 'Bisa masuk jalan desa dan kebun'],
+    dipakai: 'Pengirim yang tidak bisa mengantar sendiri ke gudang',
+    tarif: 'Rp150.000 per penjemputan'
+  },
+  {
+    id: 'kemasan-ungaran', nama: 'Toko Kemasan Tani Ungaran', label: 'Kemasan', jenis: 'kemasan', namaContoh: true,
+    kategori: 'Pemasok bahan kemasan',
+    area: 'Ungaran, Kabupaten Semarang',
+    peran: 'Menyediakan bahan kemasan yang dipakai petugas QC saat mengemas barang Full Managed.',
+    fasilitas: ['Karung goni dan hermetic bag untuk kopi', 'Boks styrofoam dan gel pendingin untuk sayur', 'Kardus berventilasi untuk buah'],
+    dipakai: 'Semua kiriman Full Managed',
+    tarif: 'Sudah termasuk di biaya cek mutu dan pengemasan'
+  }
+];
+const mitra = (id) => MITRA.find((m) => m.id === id);
+const CATATAN_MITRA = 'Nama mitra masih contoh untuk simulasi. Belum ada perjanjian kerja sama.';
+const KURIR_LOKAL = mitra('kurir-desa').nama;
+
 /* ---------- KATEGORI PENYIMPANAN ---------- */
 const RUANG = {
-  kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 100 },
-  sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250, mitra: 'MGM Bosco Logistics' },
-  chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300, mitra: 'MGM Bosco Logistics' }
+  kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 100, mitraId: 'lumbung' },
+  sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250, mitraId: 'mgm-bosco' },
+  chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300, mitraId: 'mgm-bosco' }
 };
-
-/* Nama calon mitra (sesuai slide Key Partners). Belum ada perjanjian kerja sama. */
-const CATATAN_MITRA = 'Nama mitra adalah contoh calon mitra. Belum ada perjanjian kerja sama.';
-const KURIR_LOKAL = 'Kurir lokal setempat';
 /* "Gudang kering ber-AC" -> "gudang kering ber-AC" (toLowerCase merusak singkatan AC) */
 const ruangKecil = (simpan) => RUANG[simpan].nama.charAt(0).toLowerCase() + RUANG[simpan].nama.slice(1);
-function namaGudang(simpan, hub) {
-  return RUANG[simpan].mitra ? `${RUANG[simpan].mitra}, ${hub}` : `Gudang pihak ketiga, ${hub}`;
-}
+const mitraGudang = (simpan) => mitra(RUANG[simpan].mitraId);
+function namaGudang(simpan) { return mitraGudang(simpan).nama; }
 
 /* ---------- KOMODITAS ----------
    simpan = kategori ruang. Langkah kemas: [ikon, langkah, alasan]. */
@@ -138,10 +189,10 @@ const KOMODITAS = {
    Wilayah layanan: dari Jawa Tengah ke kota-kota di Pulau Jawa, semuanya lewat darat.
    dingin: bisa bawa produk sejuk/chiller. */
 const RUTE = [
-  { id: 'darat-reg',  nama: 'Darat reguler',     moda: 'Darat', perKg: 3500, hari: [2, 4], dingin: false, mitra: 'Ekspedisi kargo darat' },
-  { id: 'darat-exp',  nama: 'Darat express',     moda: 'Darat', perKg: 6000, hari: [1, 2], dingin: false, mitra: 'Ekspedisi kargo darat' },
-  { id: 'darat-dgn',  nama: 'Truk berpendingin', moda: 'Darat', perKg: 8500, hari: [1, 2], dingin: true,  mitra: 'MGM Bosco Logistics (truk berpendingin)' }
-];
+  { id: 'darat-reg',  nama: 'Darat reguler',     moda: 'Darat', perKg: 3500, hari: [2, 4], dingin: false, mitraId: 'trans-jawa' },
+  { id: 'darat-exp',  nama: 'Darat express',     moda: 'Darat', perKg: 6000, hari: [1, 2], dingin: false, mitraId: 'trans-jawa' },
+  { id: 'darat-dgn',  nama: 'Truk berpendingin', moda: 'Darat', perKg: 8500, hari: [1, 2], dingin: true,  mitraId: 'mgm-bosco' }
+].map((r) => ({ ...r, mitra: mitra(r.mitraId).nama }));
 
 const BIAYA_PLATFORM = 5000;   // fee platform per transaksi (Full Managed & Self-Packaging)
 const BIAYA_JEMPUT = 150000;   // kurir lokal menjemput dari kebun atau gudang pengirim
@@ -149,6 +200,7 @@ const HARI_SIMPAN = 2;         // perkiraan lama barang di gudang mitra sebelum 
 
 /* ---------- KOTA ----------
    asal: true = kota asal yang dilayani (Jawa Tengah), semua masuk ke gudang mitra Semarang.
+   sentra = komoditas yang dihasilkan daerah itu; peran = alasan kota non-sentra ada di daftar asal.
    Kota tujuan: semua kota di daftar ini (Pulau Jawa). */
 const GUDANG = 'Semarang';
 const WILAYAH_ASAL = 'Jawa Tengah';
@@ -157,8 +209,8 @@ const KOTA = [
   { nama: 'Wonosobo (Dieng)', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
   { nama: 'Banjarnegara', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur, kentang' },
   { nama: 'Magelang', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
-  { nama: 'Semarang', prov: 'Jawa Tengah', asal: true },
-  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', asal: true },
+  { nama: 'Semarang', prov: 'Jawa Tengah', asal: true, peran: 'Gudang mitra' },
+  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', asal: true, peran: 'UMKM' },
   { nama: 'Jakarta', prov: 'DKI Jakarta' },
   { nama: 'Bogor', prov: 'Jawa Barat' },
   { nama: 'Depok', prov: 'Jawa Barat' },
@@ -261,16 +313,16 @@ function hitungManaged() {
   const r = ruteManaged();
   const ruang = RUANG[k.simpan];
   const rincian = [];
-  if (state.managed.serah === 'jemput') rincian.push(['Jemput dari lokasi Anda (kurir lokal)', BIAYA_JEMPUT]);
+  if (state.managed.serah === 'jemput') rincian.push([`Jemput dari lokasi Anda (${KURIR_LOKAL})`, BIAYA_JEMPUT]);
   rincian.push([`Cek mutu dan pengemasan (${berat.toLocaleString('id-ID')} kg)`, k.handlingPerKg * berat]);
-  rincian.push([`Sewa ${ruangKecil(k.simpan)}, ${HARI_SIMPAN} hari`, ruang.sewaPerKgHari * berat * HARI_SIMPAN]);
-  rincian.push([`Ongkos kirim: ${r.nama}`, r.perKg * berat]);
+  rincian.push([`Sewa ${ruangKecil(k.simpan)} (${namaGudang(k.simpan)}), ${HARI_SIMPAN} hari`, ruang.sewaPerKgHari * berat * HARI_SIMPAN]);
+  rincian.push([`Ongkos kirim: ${r.nama} (${r.mitra})`, r.perKg * berat]);
   rincian.push(['Fee platform', BIAYA_PLATFORM]);
   return { rute: r, rincian, total: rincian.reduce((t, [, v]) => t + v, 0) };
 }
 
 function hitungSelf(r) {
-  const rincian = [[`Ongkos kirim: ${r.nama}`, r.perKg * state.shipment.berat], ['Fee platform', BIAYA_PLATFORM]];
+  const rincian = [[`Ongkos kirim: ${r.nama} (${r.mitra})`, r.perKg * state.shipment.berat], ['Fee platform', BIAYA_PLATFORM]];
   return { rute: r, rincian, total: rincian.reduce((t, [, v]) => t + v, 0) };
 }
 
@@ -298,38 +350,46 @@ function kartuPerlindungan() {
 
 /* Siapa yang mengerjakan tiap bagian kiriman: TransportX mengatur, fasilitas dan armada milik mitra.
    d: { layanan, serah, hub, simpan, rute } */
+/* mitra pengangkut sebuah rute (riwayat lama hanya menyimpan nama) */
+const mitraRute = (rute) => mitra(rute.mitraId) || MITRA.find((m) => m.nama === rute.mitra);
+
 function kartuPelaksana(d) {
-  const label = { tx: 'TransportX', mitra: 'Mitra', anda: 'Anda' };
+  // baris: [tugas, nama, jenis warna (tx | mitra | anda), label jenis, id mitra]
+  const angkut = mitraRute(d.rute);
+  const labelAngkut = d.rute.dingin ? 'Truk dingin' : 'Ekspedisi';
   const baris = d.layanan === 'Full Managed'
     ? [
-        ['Atur rute, jadwal, dan status', 'Aplikasi dan admin TransportX', 'tx'],
+        ['Atur rute, jadwal, dan status', 'Aplikasi dan admin TransportX', 'tx', 'TransportX'],
         d.serah === 'jemput'
-          ? ['Jemput dari lokasi Anda', KURIR_LOKAL, 'mitra']
-          : ['Antar ke gudang mitra', 'Anda', 'anda'],
-        ['Cek mutu dan foto', 'Petugas QC TransportX', 'tx'],
-        [`Kemas dan simpan (${ruangKecil(d.simpan)})`, namaGudang(d.simpan, d.hub), 'mitra'],
-        [`Angkut lewat ${d.rute.moda.toLowerCase()}`, d.rute.mitra, 'mitra'],
-        ['Urus klaim kalau ada kerusakan', 'CS TransportX', 'tx']
+          ? ['Jemput dari lokasi Anda', KURIR_LOKAL, 'mitra', 'Kurir', 'kurir-desa']
+          : ['Antar ke gudang mitra', 'Anda', 'anda', 'Anda'],
+        ['Cek mutu dan foto', 'Petugas QC TransportX', 'tx', 'TransportX'],
+        [`Simpan di ${ruangKecil(d.simpan)}`, namaGudang(d.simpan), 'mitra', mitraGudang(d.simpan).label, mitraGudang(d.simpan).id],
+        [`Angkut sampai ${d.tujuan || 'tujuan'}`, d.rute.mitra, 'mitra', labelAngkut, angkut?.id],
+        ['Urus klaim kalau ada kerusakan', 'CS TransportX', 'tx', 'TransportX']
       ]
     : [
-        ['Panduan kemas dan pilihan ekspedisi', 'Aplikasi TransportX', 'tx'],
-        ['Kemas barang sesuai panduan', 'Anda', 'anda'],
-        [`Jemput dan angkut lewat ${d.rute.moda.toLowerCase()}`, d.rute.mitra, 'mitra'],
-        ['Pantau status dan urus klaim', 'Admin dan CS TransportX', 'tx']
+        ['Panduan kemas dan pilihan ekspedisi', 'Aplikasi TransportX', 'tx', 'TransportX'],
+        ['Kemas barang sesuai panduan', 'Anda', 'anda', 'Anda'],
+        [`Jemput dan angkut sampai ${d.tujuan || 'tujuan'}`, d.rute.mitra, 'mitra', labelAngkut, angkut?.id],
+        ['Pantau status dan urus klaim', 'Admin dan CS TransportX', 'tx', 'TransportX']
       ];
   return `
     <div class="info-card who-card">
       <h3>Siapa yang mengerjakan kiriman Anda</h3>
       <ul class="who-list">
-        ${baris.map(([tugas, siapa, jenis]) => `
+        ${baris.map(([tugas, siapa, jenis, label, id]) => `
           <li>
             <span class="who-task">${escapeHTML(tugas)}</span>
-            <span class="who-name">${escapeHTML(siapa)}<em class="who-tag ${jenis}">${label[jenis]}</em></span>
+            <span class="who-name">${id
+              ? `<button type="button" class="who-link" data-mitra="${id}">${escapeHTML(siapa)}</button>`
+              : escapeHTML(siapa)}<em class="who-tag ${jenis}">${label}</em></span>
           </li>`).join('')}
       </ul>
       <p class="value-disclaimer">${d.layanan === 'Full Managed'
         ? 'TransportX tidak punya gudang dan armada sendiri. Fasilitas mitra disewa per kiriman, TransportX mengatur dan mengecek mutunya.'
         : 'TransportX tidak punya armada sendiri. Ekspedisi mitra dibayar per kiriman, TransportX memberi panduan dan memantau statusnya.'} ${CATATAN_MITRA}</p>
+      <button type="button" class="link-inline" data-mitra="">Lihat semua mitra</button>
     </div>`;
 }
 
@@ -371,7 +431,7 @@ function buatCombo(idWrap, { daftar = KOTA, sentraDulu = false, onPilih, kosong 
   const saring = (q) => {
     const t = q.trim().toLowerCase();
     if (!t) return urutan();
-    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.sentra || ''}`.toLowerCase().includes(t));
+    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.sentra || ''} ${k.peran || ''}`.toLowerCase().includes(t));
   };
 
   function render() {
@@ -379,7 +439,8 @@ function buatCombo(idWrap, { daftar = KOTA, sentraDulu = false, onPilih, kosong 
     list.innerHTML = hasil.map((k, i) => `
       <li class="combo-item${i === sorot ? ' active' : ''}" role="option" aria-selected="${i === sorot}" data-nama="${escapeHTML(k.nama)}">
         <span class="combo-text"><strong>${escapeHTML(k.nama)}</strong><span>${escapeHTML(k.prov)}</span></span>
-        ${k.sentra ? `<span class="combo-tag">${escapeHTML(k.sentra)}</span>` : ''}
+        ${k.sentra ? `<span class="combo-tag">${escapeHTML(k.sentra)}</span>`
+          : k.peran && daftar === KOTA_ASAL ? `<span class="combo-tag peran">${escapeHTML(k.peran)}</span>` : ''}
       </li>`).join('');
   }
   function buka() { hasil = saring(input.value); sorot = -1; render(); wrap.classList.add('open'); input.setAttribute('aria-expanded', 'true'); }
@@ -497,7 +558,7 @@ function renderManaged() {
   const opsiRute = (id, judul, rute) => `
     <button class="choice ${state.managed.prioritas === id ? 'selected' : ''}" data-prioritas="${id}" role="radio" aria-checked="${state.managed.prioritas === id}">
       <span class="radio"></span>
-      <span class="choice-info"><strong>${judul}</strong><span>${rute.nama}, ${hariTeks(rute)}</span></span>
+      <span class="choice-info"><strong>${judul}</strong><span>${rute.nama} oleh ${rute.mitra}, ${hariTeks(rute)}</span></span>
       <span class="choice-price">${rupiah(rute.perKg * s.berat)}</span>
     </button>`;
 
@@ -535,7 +596,7 @@ function renderManaged() {
       </ol>
     </div>
 
-    ${kartuPelaksana({ layanan: 'Full Managed', serah: state.managed.serah, hub, simpan: k.simpan, rute: r })}
+    ${kartuPelaksana({ layanan: 'Full Managed', serah: state.managed.serah, hub, simpan: k.simpan, rute: r, tujuan: s.tujuan })}
 
     <div class="info-card">
       <h3>Rincian biaya</h3>
@@ -625,7 +686,7 @@ function updateSelfUI() {
   setStep(3, state.selectedExp ? 'done' : semua ? 'current' : '');
 
   const r = RUTE.find((x) => x.id === state.selectedExp);
-  $('#self-cost').innerHTML = r ? `<h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}${kartuPerlindungan()}${kartuPelaksana({ layanan: 'Self-Packaging', rute: r })}` : '';
+  $('#self-cost').innerHTML = r ? `<h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}${kartuPerlindungan()}${kartuPelaksana({ layanan: 'Self-Packaging', rute: r, tujuan: state.shipment.tujuan })}` : '';
 
   $('#btn-confirm-self').disabled = !(semua && r);
   $('#self-footer-note').textContent = !semua ? `Selesaikan langkah mengemas (${selesai}/${total}).` : !r ? 'Pilih ekspedisi untuk melanjutkan.' : '';
@@ -670,7 +731,7 @@ function renderBayar() {
       ${rincianHTML(d.rincian, d.total)}
     </div>
 
-    ${kartuPelaksana({ ...d, simpan: komoditas().simpan })}
+    ${kartuPelaksana({ ...d, simpan: komoditas().simpan, tujuan: s.tujuan })}
 
     <h2 class="section-label">Metode pembayaran</h2>
     <div class="choice-list" role="radiogroup" aria-label="Metode pembayaran">
@@ -713,7 +774,7 @@ function bayar() {
     serah: d.serah || null,
     hub: d.hub || null,
     kemasan: d.kemasan || null,
-    rute: { nama: d.rute.nama, moda: d.rute.moda, mitra: d.rute.mitra, hari: d.rute.hari },
+    rute: { nama: d.rute.nama, moda: d.rute.moda, mitra: d.rute.mitra, mitraId: d.rute.mitraId, dingin: d.rute.dingin, hari: d.rute.hari },
     total: d.total,
     metode: METODE.find((m) => m.id === state.bayar.metode).nama,
     wa: state.bayar.wa ? state.bayar.nomor : null,
@@ -739,26 +800,29 @@ function batalPesanan() {
 /* ---------- LACAK: TAHAPAN, FOTO, PENANGGUNG JAWAB ---------- */
 function tahapan(d) {
   const ruang = ruangKecil(d.simpan);
-  const gudang = namaGudang(d.simpan, d.hub);
+  // nama mitra + perannya, supaya jelas mana gudang dan mana ekspedisi
+  const gudang = `${namaGudang(d.simpan)}${d.simpan === 'kering' ? '' : ' (cold storage)'}`;
+  const angkut = `${d.rute.mitra} (${d.rute.dingin ? 'truk berpendingin' : 'ekspedisi'})`;
+  const kurir = `${KURIR_LOKAL} (kurir lokal)`;
   const belumDiserahkan = 'Anda (barang belum diserahkan)';
   if (d.layanan === 'Full Managed') {
     return [
       { judul: 'Pesanan dibayar', oleh: 'TransportX', tanggungan: belumDiserahkan },
       d.serah === 'jemput'
-        ? { judul: 'Dijemput kurir lokal', oleh: KURIR_LOKAL, lokasi: d.asal }
-        : { judul: 'Diantar ke gudang mitra', oleh: 'Pengirim', lokasi: `Menuju ${gudang}` },
-      { judul: 'Diterima dan dicek mutunya', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: gudang, foto: 'Foto saat diterima: timbang dan cek kondisi' },
-      { judul: 'Dikemas sesuai panduan', oleh: 'Petugas QC TransportX dan gudang mitra', tanggungan: gudang, lokasi: gudang, foto: 'Foto setelah dikemas' },
-      { judul: `Disimpan di ${ruang}`, oleh: gudang, lokasi: gudang, catatan: 'Suhu dicatat alat pencatat suhu' },
-      { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: d.rute.mitra, lokasi: `Menuju ${d.tujuan}` },
-      { judul: 'Tiba di tujuan', oleh: d.rute.mitra, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
+        ? { judul: 'Dijemput kurir lokal', oleh: kurir, lokasi: d.asal }
+        : { judul: 'Diantar ke gudang mitra', oleh: 'Pengirim', lokasi: `Menuju ${namaGudang(d.simpan)}` },
+      { judul: 'Diterima dan dicek mutunya', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: namaGudang(d.simpan), foto: 'Foto saat diterima: timbang dan cek kondisi' },
+      { judul: 'Dikemas sesuai panduan', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: namaGudang(d.simpan), foto: 'Foto setelah dikemas' },
+      { judul: `Disimpan di ${ruang}`, oleh: gudang, lokasi: namaGudang(d.simpan), catatan: 'Suhu dicatat alat pencatat suhu' },
+      { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: angkut, lokasi: `Menuju ${d.tujuan}` },
+      { judul: 'Tiba di tujuan', oleh: angkut, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
     ];
   }
   return [
     { judul: 'Pesanan dibayar', oleh: 'TransportX', tanggungan: belumDiserahkan },
-    { judul: 'Dijemput ekspedisi', oleh: d.rute.mitra, lokasi: d.asal, foto: 'Foto kemasan saat dijemput' },
-    { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: d.rute.mitra, lokasi: `Menuju ${d.tujuan}` },
-    { judul: 'Tiba di tujuan', oleh: d.rute.mitra, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
+    { judul: 'Dijemput ekspedisi', oleh: angkut, lokasi: d.asal, foto: 'Foto kemasan saat dijemput' },
+    { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: angkut, lokasi: `Menuju ${d.tujuan}` },
+    { judul: 'Tiba di tujuan', oleh: angkut, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
   ];
 }
 

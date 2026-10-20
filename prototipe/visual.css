@@ -53,6 +53,110 @@
   font-weight: 700;
 }
 
+/* ---- label kota: oranye = sentra produksi, hijau = peran kota (gudang mitra, UMKM) ---- */
+.combo-tag.peran { background: var(--primary-soft); color: var(--primary-dark); }
+
+/* ---- nama mitra yang bisa diklik (kartu "Siapa yang mengerjakan") ---- */
+.who-link {
+  border: none; background: none; padding: 0;
+  font: inherit; font-weight: 600; text-align: left;
+  color: var(--primary-dark);
+  text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px;
+  cursor: pointer;
+}
+.who-link:hover { color: var(--primary); }
+.who-card .link-inline { align-self: flex-start; }
+
+/* ===================== HALAMAN MITRA ===================== */
+.mitra-topbar { justify-content: flex-start; gap: 12px; }
+.icon-btn[hidden] { display: none; }
+
+.mitra-intro {
+  background: var(--primary-soft);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  flex-shrink: 0;
+}
+.mitra-intro strong { display: block; font-size: 15px; color: var(--primary-dark); }
+.mitra-intro p { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+/* alur siapa memegang barang */
+.alur-mitra { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.alur-mitra li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; position: relative; padding-bottom: 16px; }
+.alur-mitra li:not(:last-child)::before {
+  content: ""; position: absolute; left: 19px; top: 40px; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.alur-ikon {
+  position: relative;
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  display: grid; place-items: center; color: var(--primary-dark);
+}
+.alur-ikon svg { width: 20px; height: 20px; }
+.alur-ikon b {
+  position: absolute; right: -6px; top: -6px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  font-size: 11px; display: grid; place-items: center;
+}
+.alur-isi { display: flex; flex-direction: column; gap: 3px; padding-top: 2px; min-width: 0; }
+.alur-isi strong { font-size: 15px; }
+.alur-isi > span { font-size: 13.5px; color: var(--ink-soft); line-height: 1.45; }
+.alur-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.alur-tx { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--primary-dark); }
+.alur-tx svg { width: 15px; height: 15px; stroke-width: 2.2; }
+
+.mitra-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--border); background: var(--surface);
+  border-radius: 999px; padding: 5px 11px 5px 8px;
+  font: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+  cursor: pointer;
+}
+.mitra-chip:hover { border-color: var(--primary); }
+.mitra-chip svg { width: 15px; height: 15px; }
+.mitra-chip.gudang svg { color: var(--primary); }
+.mitra-chip.ekspedisi svg, .mitra-chip.kurir svg { color: var(--accent); }
+
+/* kartu mitra */
+.mitra-list { display: flex; flex-direction: column; gap: 12px; }
+.mitra-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-margin: 20px;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.mitra-card:focus { outline: none; }
+.mitra-card.sorot { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.mitra-head { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; }
+.mitra-ikon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+.mitra-ikon svg { width: 22px; height: 22px; }
+.mitra-ikon.gudang { background: var(--primary-soft); color: var(--primary-dark); }
+.mitra-ikon.ekspedisi { background: var(--accent-soft); color: var(--accent); }
+.mitra-ikon.kurir { background: #E0F2FE; color: #0369A1; }
+.mitra-ikon.kemasan { background: #F1F5F9; color: var(--ink-soft); }
+.mitra-judul { min-width: 0; }
+.mitra-judul h3 { margin: 0; font-family: var(--font-display); font-size: 17.5px; font-weight: 600; line-height: 1.25; }
+.mitra-judul span { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 2px; font-size: 13px; color: var(--muted); }
+.mitra-status { font-style: normal; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.mitra-status.contoh { background: #F1F5F9; color: var(--ink-soft); }
+.mitra-status.calon { background: var(--accent-soft); color: #9A3412; }
+.mitra-peran { margin: 0; font-size: 14.5px; line-height: 1.5; }
+.mitra-info { margin: 0; display: grid; gap: 6px; }
+.mitra-info div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+.mitra-info dt { color: var(--muted); }
+.mitra-info dd { margin: 0; font-weight: 500; }
+.mitra-fasilitas { margin: 0; padding: 10px 12px 10px 28px; background: var(--bg); border-radius: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+.mitra-catatan { margin: 0; font-size: 12.5px; color: var(--muted); }
+
+.mitra-tx h3 { display: flex; align-items: center; gap: 8px; }
+.mitra-tx h3 svg { width: 18px; height: 18px; color: var(--primary); stroke-width: 2.2; }
+.mitra-tx ul { margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+
 /* ---- penanda langkah ---- */
 .flow { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 6px; }
 .flow li { flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0; font-size: 12.5px; font-weight: 500; color: var(--muted); }

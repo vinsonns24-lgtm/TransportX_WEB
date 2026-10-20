@@ -46,6 +46,11 @@
         <h2 class="section-label">Wilayah layanan</h2>
         <div class="coverage-card" id="home-peta"></div>
 
+        <button class="link-card" data-mitra="">
+          <span>Lihat mitra yang mengerjakan kiriman</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
         <h2 class="section-label">Kenapa TransportX</h2>
         <ul class="why-list">
           <li>
@@ -305,6 +310,15 @@
       <div class="screen-body" id="riwayat-list"></div>
     </section>
 
+    <!-- ========== 8B. MITRA ========== -->
+    <section class="screen" id="screen-mitra" data-tabbar="true">
+      <header class="topbar mitra-topbar">
+        <button class="icon-btn" id="mitra-back" data-back aria-label="Kembali" hidden><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Mitra kami</span>
+      </header>
+      <div class="screen-body" id="mitra-content"></div>
+    </section>
+
     <!-- ========== 9. PERLINDUNGAN & KLAIM ========== -->
     <section class="screen" id="screen-perlindungan">
       <header class="topbar topbar-nav">
@@ -543,6 +557,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       Riwayat
     </button>
+    <button class="tab" data-tab="mitra">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.8.3 5 2.6 5 5.8"/></svg>
+      Mitra
+    </button>
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -550,5 +568,6 @@
 
 <script src="script.js"></script>
 <script src="visual.js"></script>
+<script src="mitra.js"></script>
 </body>
 </html>
