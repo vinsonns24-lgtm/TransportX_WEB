@@ -200,7 +200,7 @@ const HARI_SIMPAN = 2;         // perkiraan lama barang di gudang mitra sebelum 
 
 /* ---------- KOTA ----------
    asal: true = kota asal yang dilayani (Jawa Tengah), semua masuk ke gudang mitra Semarang.
-   sentra = komoditas yang dihasilkan daerah itu; peran = alasan kota non-sentra ada di daftar asal.
+   sentra = komoditas yang dihasilkan daerah itu (label oranye di daftar kota asal).
    Kota tujuan: semua kota di daftar ini (Pulau Jawa). */
 const GUDANG = 'Semarang';
 const WILAYAH_ASAL = 'Jawa Tengah';
@@ -209,8 +209,8 @@ const KOTA = [
   { nama: 'Wonosobo (Dieng)', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
   { nama: 'Banjarnegara', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur, kentang' },
   { nama: 'Magelang', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
-  { nama: 'Semarang', prov: 'Jawa Tengah', asal: true, peran: 'Gudang mitra' },
-  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', asal: true, peran: 'UMKM' },
+  { nama: 'Semarang', prov: 'Jawa Tengah', asal: true },
+  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', asal: true },
   { nama: 'Jakarta', prov: 'DKI Jakarta' },
   { nama: 'Bogor', prov: 'Jawa Barat' },
   { nama: 'Depok', prov: 'Jawa Barat' },
@@ -431,7 +431,7 @@ function buatCombo(idWrap, { daftar = KOTA, sentraDulu = false, onPilih, kosong 
   const saring = (q) => {
     const t = q.trim().toLowerCase();
     if (!t) return urutan();
-    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.sentra || ''} ${k.peran || ''}`.toLowerCase().includes(t));
+    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.sentra || ''}`.toLowerCase().includes(t));
   };
 
   function render() {
@@ -439,8 +439,7 @@ function buatCombo(idWrap, { daftar = KOTA, sentraDulu = false, onPilih, kosong 
     list.innerHTML = hasil.map((k, i) => `
       <li class="combo-item${i === sorot ? ' active' : ''}" role="option" aria-selected="${i === sorot}" data-nama="${escapeHTML(k.nama)}">
         <span class="combo-text"><strong>${escapeHTML(k.nama)}</strong><span>${escapeHTML(k.prov)}</span></span>
-        ${k.sentra ? `<span class="combo-tag">${escapeHTML(k.sentra)}</span>`
-          : k.peran && daftar === KOTA_ASAL ? `<span class="combo-tag peran">${escapeHTML(k.peran)}</span>` : ''}
+        ${k.sentra ? `<span class="combo-tag">${escapeHTML(k.sentra)}</span>` : ''}
       </li>`).join('');
   }
   function buka() { hasil = saring(input.value); sorot = -1; render(); wrap.classList.add('open'); input.setAttribute('aria-expanded', 'true'); }

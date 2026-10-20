@@ -53,9 +53,6 @@
   font-weight: 700;
 }
 
-/* ---- label kota: oranye = sentra produksi, hijau = peran kota (gudang mitra, UMKM) ---- */
-.combo-tag.peran { background: var(--primary-soft); color: var(--primary-dark); }
-
 /* ---- nama mitra yang bisa diklik (kartu "Siapa yang mengerjakan") ---- */
 .who-link {
   border: none; background: none; padding: 0;
