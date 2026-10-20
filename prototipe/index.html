@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>TransportX — Prototype</title>
+  <title>TransportX — Prototype v2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,42 +26,45 @@
         <div class="hero">
           <svg class="hero-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
           <h1>Kualitas hasil panen, terjaga sampai tujuan.</h1>
-          <p>Gudang dan cold storage sendiri untuk kopi, rempah, dan hasil panen Anda.</p>
+          <p>Disimpan sesuai produknya di gudang mitra, dikirim lewat darat, laut, atau udara, dan bisa Anda pantau lewat foto.</p>
         </div>
 
         <button class="btn btn-accent btn-wide" data-go="input">
-          <span>Cek pengiriman baru</span>
+          <span>Kirim barang baru</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </button>
 
-        <div class="duo">
-          <div class="mini-card">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 1 1 4 0z"/></svg>
-            <strong>Full Managed</strong>
-            <span>Kami urus packaging dan pengiriman</span>
+        <form class="track-box" id="home-track">
+          <label for="home-resi">Lacak kiriman tanpa login</label>
+          <div class="track-row">
+            <input id="home-resi" type="text" placeholder="Masukkan no. resi, contoh TX-123456" autocomplete="off">
+            <button class="btn btn-primary" type="submit">Lacak</button>
           </div>
-          <div class="mini-card">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg>
-            <strong>Self-Packaging</strong>
-            <span>Anda packing, kami carikan ekspedisi</span>
-          </div>
-        </div>
+        </form>
 
         <h2 class="section-label">Kenapa TransportX</h2>
         <ul class="why-list">
           <li>
             <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 1 1 4 0z"/></svg></span>
-            <div><strong>Kontrol suhu dan kelembaban</strong><p>Gudang dan armada sesuai standar tiap komoditas.</p></div>
+            <div><strong>Disimpan sesuai produknya</strong><p>Kopi dan rempah di gudang kering, buah tropis di ruang sejuk, sayuran daun di chiller.</p></div>
           </li>
           <li>
-            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
-            <div><strong>Dua pilihan layanan</strong><p>Kami urus penuh, atau Anda packing sendiri dengan panduan kami.</p></div>
+            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></span>
+            <div><strong>Foto di setiap tahap</strong><p>Foto saat diterima, setelah dikemas, dan saat tiba. Update dikirim lewat WhatsApp.</p></div>
           </li>
           <li>
-            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
-            <div><strong>Biaya jelas sejak awal</strong><p>Rincian biaya dan status pengiriman bisa dicek kapan saja.</p></div>
+            <span class="why-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <div><strong>Jelas siapa yang menanggung</strong><p>Kerusakan atau kehilangan ditanggung mitra yang sedang memegang barang. Kami bantu klaimnya.</p></div>
           </li>
         </ul>
+
+        <button class="link-card" data-go="perlindungan">
+          <span>Lihat aturan perlindungan dan klaim</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <p class="proto-note">Prototipe untuk uji coba. Tidak ada uang yang keluar dan tidak ada barang yang benar-benar dikirim. Harga dan nama mitra masih contoh.</p>
+        <button class="btn-text" id="btn-panel-open">Panel moderator</button>
       </div>
     </section>
 
@@ -69,6 +73,7 @@
       <header class="topbar topbar-nav">
         <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         <span class="title">Data pengiriman</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
       </header>
 
       <div class="screen-body">
@@ -78,17 +83,25 @@
             <select id="f-komoditas"></select>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </div>
+          <p class="field-help" id="komoditas-help"></p>
         </div>
 
         <div class="field">
           <label for="f-berat">Berat (kg)</label>
           <input id="f-berat" type="number" min="1" inputmode="numeric" placeholder="Contoh: 500">
           <div class="chips" id="berat-chips">
+            <button type="button" class="chip" data-berat="50">50 kg</button>
             <button type="button" class="chip" data-berat="100">100 kg</button>
             <button type="button" class="chip" data-berat="250">250 kg</button>
             <button type="button" class="chip" data-berat="500">500 kg</button>
             <button type="button" class="chip" data-berat="1000">1 ton</button>
           </div>
+        </div>
+
+        <div class="field">
+          <label for="f-nilai">Nilai barang (Rp)</label>
+          <input id="f-nilai" type="text" inputmode="numeric" placeholder="Contoh: 25.000.000">
+          <p class="field-help">Dipakai sebagai dasar klaim kalau barang rusak atau hilang. Isi sesuai harga jual barang Anda.</p>
         </div>
 
         <div class="field">
@@ -101,6 +114,8 @@
           </div>
         </div>
 
+        <div class="hub-card" id="hub-card" hidden></div>
+
         <div class="field">
           <label for="f-tujuan">Kota tujuan</label>
           <div class="combo" id="combo-tujuan">
@@ -109,11 +124,7 @@
             <svg class="combo-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             <ul class="combo-list" id="list-tujuan" role="listbox" aria-label="Pilihan kota tujuan"></ul>
           </div>
-        </div>
-
-        <div class="callout">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
-          <p>Panduan packaging dan estimasi biaya akan menyesuaikan jenis komoditas yang Anda pilih.</p>
+          <p class="field-help">Kota Anda tidak ada di daftar? Pilih kota terdekat. Kurir lokal mitra bisa menjemput dari lokasi Anda.</p>
         </div>
       </div>
 
@@ -127,18 +138,19 @@
       <header class="topbar topbar-nav">
         <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         <span class="title">Pilih layanan</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
       </header>
 
       <div class="screen-body">
         <div class="summary-card" id="layanan-summary"></div>
 
-        <p class="lead">Mau packaging diurus siapa?</p>
+        <p class="lead">Mau dikemas oleh siapa?</p>
 
         <button class="option-card" data-go="managed">
           <span class="option-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg></span>
           <span class="option-text">
             <strong>Full Managed</strong>
-            <span>Kirim barang ke gudang kami. Packing, penyimpanan, dan pengiriman kami yang urus.</span>
+            <span>Barang diantar atau dijemput ke gudang mitra. Kami cek mutunya, kemas, simpan, dan kirim. Cocok untuk kiriman besar.</span>
             <em id="price-managed"></em>
           </span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
@@ -148,7 +160,7 @@
           <span class="option-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
           <span class="option-text">
             <strong>Self-Packaging</strong>
-            <span>Anda packing sendiri dengan panduan kami, lalu pilih ekspedisi yang sesuai.</span>
+            <span>Anda kemas sendiri dengan panduan bergambar, lalu pilih ekspedisi yang sanggup membawa produk Anda.</span>
             <em id="price-self"></em>
           </span>
           <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
@@ -161,21 +173,23 @@
       <header class="topbar topbar-nav">
         <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         <span class="title">Full Managed</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
       </header>
 
       <div class="screen-body" id="managed-content"></div>
 
       <footer class="screen-footer">
         <div class="total-row"><span>Total estimasi</span><strong id="managed-total"></strong></div>
-        <button class="btn btn-primary btn-wide" id="btn-confirm-managed">Konfirmasi pengiriman</button>
+        <button class="btn btn-primary btn-wide" id="btn-confirm-managed">Lanjut ke pembayaran</button>
       </footer>
     </section>
 
-    <!-- ========== 4B. SELF-PACKAGING (halaman baru) ========== -->
+    <!-- ========== 4B. SELF-PACKAGING ========== -->
     <section class="screen" id="screen-self">
       <header class="topbar topbar-nav">
         <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         <span class="title">Self-Packaging</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
       </header>
 
       <div class="stepper" aria-label="Langkah self-packaging">
@@ -187,54 +201,313 @@
       </div>
 
       <div class="screen-body">
-        <!-- Langkah 1: panduan -->
-        <h2 class="section-label">Standar untuk <span id="self-komoditas-name"></span></h2>
+        <h2 class="section-label">Cara menyimpan <span id="self-komoditas-name"></span></h2>
         <div class="spec-grid" id="self-spec"></div>
+
+        <h3 class="sub-label">Pilih jenis kemasan</h3>
+        <div class="kemasan-list" id="self-kemasan" role="radiogroup" aria-label="Jenis kemasan"></div>
 
         <h3 class="sub-label">Bahan yang perlu disiapkan</h3>
         <ul class="material-list" id="self-materials"></ul>
 
-        <!-- Langkah 2: checklist -->
-        <h2 class="section-label">Checklist packing</h2>
-        <p class="hint">Centang setiap langkah setelah selesai dikerjakan.</p>
+        <h2 class="section-label">Langkah mengemas</h2>
+        <p class="hint">Ikuti gambar, lalu centang setiap langkah setelah selesai.</p>
         <div class="progress"><div class="progress-bar" id="self-progress"></div></div>
         <ul class="checklist" id="self-checklist"></ul>
 
-        <!-- Langkah 3: ekspedisi -->
         <h2 class="section-label">Pilih ekspedisi</h2>
         <p class="hint" id="self-exp-hint"></p>
         <div class="exp-list" id="self-expedisi" role="radiogroup" aria-label="Pilihan ekspedisi"></div>
 
         <div class="cost-card" id="self-cost"></div>
-        <div id="self-value"></div>
       </div>
 
       <footer class="screen-footer">
         <p class="footer-note" id="self-footer-note"></p>
-        <button class="btn btn-primary btn-wide" id="btn-confirm-self" disabled>Konfirmasi pengiriman</button>
+        <button class="btn btn-primary btn-wide" id="btn-confirm-self" disabled>Lanjut ke pembayaran</button>
       </footer>
     </section>
 
-    <!-- ========== 5. RINGKASAN ========== -->
+    <!-- ========== 5. PEMBAYARAN ========== -->
+    <section class="screen" id="screen-bayar">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Pembayaran</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+
+      <div class="screen-body" id="bayar-content"></div>
+
+      <footer class="screen-footer">
+        <div class="total-row"><span>Total dibayar</span><strong id="bayar-total"></strong></div>
+        <button class="btn btn-primary btn-wide" id="btn-bayar">Bayar sekarang</button>
+        <button class="btn btn-ghost btn-wide danger" id="btn-batal">Batalkan pesanan</button>
+      </footer>
+    </section>
+
+    <!-- ========== 6. LACAK / DETAIL KIRIMAN ========== -->
     <section class="screen" id="screen-ringkasan">
       <header class="topbar topbar-nav">
         <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-        <span class="title">Ringkasan pengiriman</span>
+        <span class="title">Lacak kiriman</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
       </header>
 
       <div class="screen-body" id="ringkasan-content"></div>
 
       <footer class="screen-footer">
-        <button class="btn btn-ghost btn-wide" id="btn-home">Kembali ke Home</button>
+        <button class="btn btn-primary btn-wide" id="btn-ke-beranda">Kembali ke beranda</button>
       </footer>
     </section>
 
-    <!-- ========== 6. RIWAYAT ========== -->
+    <!-- ========== 7. LACAK (tab, tanpa login) ========== -->
+    <section class="screen" id="screen-lacak" data-tabbar="true">
+      <header class="topbar">
+        <span class="title">Lacak kiriman</span>
+      </header>
+      <div class="screen-body">
+        <form class="track-box" id="tab-track">
+          <label for="tab-resi">Nomor resi</label>
+          <div class="track-row">
+            <input id="tab-resi" type="text" placeholder="Contoh TX-123456" autocomplete="off">
+            <button class="btn btn-primary" type="submit">Lacak</button>
+          </div>
+          <p class="field-help">Tidak perlu login. Pembeli juga bisa melacak dengan nomor resi atau link yang Anda bagikan.</p>
+        </form>
+        <h2 class="section-label">Kiriman terakhir di perangkat ini</h2>
+        <div id="lacak-list"></div>
+      </div>
+    </section>
+
+    <!-- ========== 8. RIWAYAT ========== -->
     <section class="screen" id="screen-riwayat" data-tabbar="true">
       <header class="topbar">
         <span class="title">Riwayat pengiriman</span>
       </header>
       <div class="screen-body" id="riwayat-list"></div>
+    </section>
+
+    <!-- ========== 9. PERLINDUNGAN & KLAIM ========== -->
+    <section class="screen" id="screen-perlindungan">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Perlindungan dan klaim</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="protect-hero">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div>
+            <strong>Siapa yang mengganti kalau barang rusak atau hilang?</strong>
+            <p>Mitra yang sedang memegang barang saat kejadian, sesuai ketentuan tanggungan mitra tersebut. TransportX membantu mengurus klaimnya.</p>
+          </div>
+        </div>
+
+        <h2 class="section-label">Tanggung jawab per tahap</h2>
+        <div class="resp-table">
+          <div class="resp-row head"><span>Tahap</span><span>Yang menanggung</span></div>
+          <div class="resp-row"><span>Dijemput kurir lokal</span><span>Kurir lokal mitra</span></div>
+          <div class="resp-row"><span>Disimpan dan dikemas di gudang</span><span>Gudang atau cold storage mitra</span></div>
+          <div class="resp-row"><span>Dalam perjalanan</span><span>Ekspedisi, pelayaran, atau kargo udara mitra</span></div>
+          <div class="resp-row"><span>Self-Packaging: kemasan dari pengirim</span><span>Pengirim, jika kemasan tidak sesuai panduan</span></div>
+        </div>
+        <p class="hint">Besar ganti rugi mengikuti ketentuan tiap mitra dan dihitung dari nilai barang yang Anda isi saat memesan.</p>
+
+        <h2 class="section-label">Cara mengajukan klaim</h2>
+        <ol class="steps">
+          <li><b>1</b>Buka kiriman di menu Lacak, tekan "Ajukan klaim"</li>
+          <li><b>2</b>Pilih masalahnya dan lampirkan foto barang saat tiba</li>
+          <li><b>3</b>CS membandingkan dengan foto cek mutu di gudang untuk melihat di tahap mana kerusakan terjadi</li>
+          <li><b>4</b>Klaim diteruskan ke mitra yang bertanggung jawab, ganti rugi dibayarkan sesuai ketentuannya</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== 10. FORM KLAIM ========== -->
+    <section class="screen" id="screen-klaim">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Ajukan klaim</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="summary-card" id="klaim-summary"></div>
+        <div class="q">
+          <span class="q-label">Apa masalahnya?</span>
+          <div class="opt-row" id="klaim-jenis">
+            <button class="opt" data-val="Rusak">Barang rusak</button>
+            <button class="opt" data-val="Hilang">Barang hilang</button>
+            <button class="opt" data-val="Kurang">Berat kurang</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="klaim-desk">Ceritakan singkat</label>
+          <textarea id="klaim-desk" rows="3" placeholder="Contoh: 2 karung basah dan berbau apek saat dibuka"></textarea>
+        </div>
+        <div class="field">
+          <label for="klaim-foto">Foto barang saat tiba</label>
+          <input id="klaim-foto" type="file" accept="image/*">
+        </div>
+        <p class="hint" id="klaim-hint"></p>
+      </div>
+      <footer class="screen-footer">
+        <button class="btn btn-primary btn-wide" id="btn-kirim-klaim">Kirim klaim (simulasi)</button>
+      </footer>
+    </section>
+
+    <!-- ========== 11. FEEDBACK ========== -->
+    <section class="screen" id="screen-feedback">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Masukan Anda</span>
+      </header>
+
+      <div class="screen-body">
+        <p class="hint">Jawaban Anda dipakai untuk memperbaiki produk ini. Tidak ada jawaban benar atau salah.</p>
+
+        <div class="q">
+          <label class="q-label" for="fb-usia">Berapa usia Anda?</label>
+          <input id="fb-usia" type="number" min="10" max="99" inputmode="numeric" placeholder="Contoh: 35">
+        </div>
+
+        <div class="q">
+          <label class="q-label">Jenis kelamin</label>
+          <div class="opt-row" data-q="gender">
+            <button class="opt" data-val="Laki-laki">Laki-laki</button>
+            <button class="opt" data-val="Perempuan">Perempuan</button>
+            <button class="opt" data-val="Tidak menjawab">Memilih tidak menjawab</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Anda berperan sebagai apa?</label>
+          <div class="opt-row" data-q="peran">
+            <button class="opt" data-val="Petani / produsen">Petani / produsen</button>
+            <button class="opt" data-val="UMKM pengolah">UMKM pengolah</button>
+            <button class="opt" data-val="Pembeli bisnis">Pembeli bisnis</button>
+            <button class="opt" data-val="Mahasiswa / lainnya">Mahasiswa / lainnya</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Pernah mengalami barang rusak atau turun kualitas saat dikirim?</label>
+          <div class="opt-row" data-q="pernahRusak">
+            <button class="opt" data-val="Sering">Sering</button>
+            <button class="opt" data-val="Pernah sekali dua kali">Pernah</button>
+            <button class="opt" data-val="Belum pernah">Belum pernah</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Seberapa mudah aplikasi ini dipakai?</label>
+          <div class="rating" data-q="mudah" role="radiogroup" aria-label="Kemudahan pemakaian">
+            <button class="star" data-val="1" aria-label="1 dari 5">1</button>
+            <button class="star" data-val="2" aria-label="2 dari 5">2</button>
+            <button class="star" data-val="3" aria-label="3 dari 5">3</button>
+            <button class="star" data-val="4" aria-label="4 dari 5">4</button>
+            <button class="star" data-val="5" aria-label="5 dari 5">5</button>
+          </div>
+          <div class="scale-hint"><span>Sulit</span><span>Sangat mudah</span></div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Seberapa besar aplikasi ini membantu masalah pengiriman Anda?</label>
+          <div class="rating" data-q="membantu" role="radiogroup" aria-label="Tingkat kebermanfaatan">
+            <button class="star" data-val="1" aria-label="1 dari 5">1</button>
+            <button class="star" data-val="2" aria-label="2 dari 5">2</button>
+            <button class="star" data-val="3" aria-label="3 dari 5">3</button>
+            <button class="star" data-val="4" aria-label="4 dari 5">4</button>
+            <button class="star" data-val="5" aria-label="5 dari 5">5</button>
+          </div>
+          <div class="scale-hint"><span>Tidak membantu</span><span>Sangat membantu</span></div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Kalau layanan ini benar-benar ada, Anda akan pakai?</label>
+          <div class="opt-row" data-q="minat">
+            <button class="opt" data-val="Ya, pasti pakai">Ya, pasti</button>
+            <button class="opt" data-val="Mungkin, lihat dulu">Mungkin</button>
+            <button class="opt" data-val="Tidak">Tidak</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Bagaimana menurut Anda harganya?</label>
+          <div class="opt-row" data-q="harga">
+            <button class="opt" data-val="Kemahalan">Kemahalan</button>
+            <button class="opt" data-val="Wajar">Wajar</button>
+            <button class="opt" data-val="Murah">Murah</button>
+            <button class="opt" data-val="Tidak tahu">Tidak tahu</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label" for="fb-suka">Bagian mana yang paling Anda sukai?</label>
+          <textarea id="fb-suka" rows="2" placeholder="Contoh: foto kondisi barang di setiap tahap"></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label" for="fb-kritik">Apa yang ingin Anda ubah atau perbaiki?</label>
+          <textarea id="fb-kritik" rows="2" placeholder="Contoh: tombol bayar kurang jelas"></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label" for="fb-tanya">Bagian mana yang membingungkan, atau apa yang ingin Anda tanyakan?</label>
+          <textarea id="fb-tanya" rows="2" placeholder="Tulis pertanyaan Anda"></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label" for="fb-ide">Fitur apa yang sebaiknya ditambah?</label>
+          <textarea id="fb-ide" rows="2" placeholder="Tulis ide Anda"></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label" for="fb-nama">Inisial nama (opsional)</label>
+          <input id="fb-nama" type="text" placeholder="Contoh: B.S.">
+        </div>
+      </div>
+
+      <footer class="screen-footer">
+        <p class="footer-note" id="fb-note"></p>
+        <button class="btn btn-primary btn-wide" id="btn-kirim-feedback">Kirim masukan</button>
+      </footer>
+    </section>
+
+    <!-- ========== 12. TERIMA KASIH ========== -->
+    <section class="screen" id="screen-terimakasih">
+      <div class="welcome">
+        <div class="success-badge"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h1 class="thanks-title">Terima kasih</h1>
+        <p class="welcome-lead">Masukan Anda sudah tersimpan dan akan kami pakai untuk memperbaiki TransportX.</p>
+      </div>
+      <footer class="screen-footer">
+        <button class="btn btn-primary btn-wide" id="btn-responden-baru">Responden berikutnya</button>
+      </footer>
+    </section>
+
+    <!-- ========== 13. PANEL MODERATOR ========== -->
+    <section class="screen" id="screen-panel">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" id="btn-panel-close" aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Panel moderator</span>
+      </header>
+
+      <div class="screen-body">
+        <div class="stat-row">
+          <div class="stat"><strong id="stat-total">0</strong><span>Responden</span></div>
+          <div class="stat"><strong id="stat-mudah">&mdash;</strong><span>Rata kemudahan</span></div>
+          <div class="stat"><strong id="stat-minat">&mdash;</strong><span>Pasti pakai</span></div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="btn btn-primary btn-wide" id="btn-export">Unduh data (CSV)</button>
+          <button class="btn btn-ghost btn-wide" id="btn-export-grid">Unduh Feedback Grid (CSV)</button>
+          <button class="btn btn-ghost btn-wide danger" id="btn-hapus">Hapus semua data</button>
+        </div>
+
+        <h2 class="section-label">Daftar masukan</h2>
+        <div id="panel-list"></div>
+      </div>
     </section>
 
   </main>
@@ -243,6 +516,10 @@
     <button class="tab active" data-tab="home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
       Home
+    </button>
+    <button class="tab" data-tab="lacak">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      Lacak
     </button>
     <button class="tab" data-tab="riwayat">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
