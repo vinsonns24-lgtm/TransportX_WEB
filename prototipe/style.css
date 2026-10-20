@@ -397,6 +397,35 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .info-card h3 { margin: 0; font-size: 15px; font-weight: 600; }
 .info-card p { margin: 0; font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
 
+/* Siapa yang mengerjakan: TransportX mengatur, mitra punya fasilitas */
+.who-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.who-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.4;
+}
+.who-list li:last-child { border-bottom: none; }
+.who-task { color: var(--ink-soft); }
+.who-name { font-weight: 600; overflow-wrap: anywhere; }
+.who-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-style: normal;
+  font-weight: 600;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.who-tag.tx { background: var(--primary-soft); color: var(--primary-dark); }
+.who-tag.mitra { background: var(--accent-soft); color: #8A4A28; }
+.who-tag.anda { background: var(--bg); color: var(--ink-soft); border: 1px solid var(--border); }
+
 .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .steps li { display: flex; gap: 12px; align-items: center; font-size: 14.5px; }
 .steps li b {

@@ -7,15 +7,27 @@
    4. Font lebih besar, layout lebar, tombol Home jelas
    5. Panduan packing bergambar, bahasa sederhana, variasi kemasan
    6. Rute hemat/cepat, daftar kota lebih lengkap, gudang mitra terdekat
+   7. Nama calon mitra per tahap + kartu "Siapa yang mengerjakan kiriman Anda"
+      (masukan dosen: TransportX tidak punya gudang dan armada sendiri)
+   8. Wilayah layanan: asal Jawa Tengah (gudang mitra Semarang), tujuan Pulau Jawa, darat saja
    Semua harga dan nama mitra masih CONTOH untuk simulasi.
    ========================================================= */
 
 /* ---------- KATEGORI PENYIMPANAN ---------- */
 const RUANG = {
   kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 100 },
-  sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250 },
-  chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300 }
+  sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250, mitra: 'MGM Bosco Logistics' },
+  chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300, mitra: 'MGM Bosco Logistics' }
 };
+
+/* Nama calon mitra (sesuai slide Key Partners). Belum ada perjanjian kerja sama. */
+const CATATAN_MITRA = 'Nama mitra adalah contoh calon mitra. Belum ada perjanjian kerja sama.';
+const KURIR_LOKAL = 'Kurir lokal setempat';
+/* "Gudang kering ber-AC" -> "gudang kering ber-AC" (toLowerCase merusak singkatan AC) */
+const ruangKecil = (simpan) => RUANG[simpan].nama.charAt(0).toLowerCase() + RUANG[simpan].nama.slice(1);
+function namaGudang(simpan, hub) {
+  return RUANG[simpan].mitra ? `${RUANG[simpan].mitra}, ${hub}` : `Gudang pihak ketiga, ${hub}`;
+}
 
 /* ---------- KOMODITAS ----------
    simpan = kategori ruang. Langkah kemas: [ikon, langkah, alasan]. */
@@ -87,7 +99,7 @@ const KOMODITAS = {
     handlingPerKg: 2500,
     peringatan: 'Jangan disimpan di bawah 12°C atau di kulkas biasa. Kulit bisa menghitam dan buah gagal matang.',
     kemasan: [
-      { id: 'kardus', nama: 'Kardus berlubang + sekat', ket: 'Untuk ekspedisi dan kargo udara',
+      { id: 'kardus', nama: 'Kardus berlubang + sekat', ket: 'Untuk ekspedisi darat',
         bahan: ['Kardus berlubang ventilasi', 'Sekat kardus', 'Kertas atau jaring busa', 'Label "Buah segar"'] },
       { id: 'krat', nama: 'Krat plastik + alas kertas', ket: 'Untuk truk atau kontainer berpendingin',
         bahan: ['Krat plastik', 'Kertas alas', 'Jaring busa', 'Label "Buah segar"'] }
@@ -107,7 +119,7 @@ const KOMODITAS = {
     handlingPerKg: 3000,
     peringatan: 'Harus tetap dingin sejak dipanen. Kirim di hari yang sama setelah dikemas.',
     kemasan: [
-      { id: 'styro', nama: 'Boks styrofoam + gel pendingin', ket: 'Untuk ekspedisi dan kargo udara',
+      { id: 'styro', nama: 'Boks styrofoam + gel pendingin', ket: 'Untuk ekspedisi darat',
         bahan: ['Boks styrofoam', 'Gel pendingin', 'Plastik berlubang', 'Lakban', 'Label "Simpan dingin"'] },
       { id: 'krat', nama: 'Krat plastik + plastik berlubang', ket: 'Untuk truk berpendingin',
         bahan: ['Krat plastik', 'Plastik berlubang', 'Label "Simpan dingin"'] }
@@ -122,15 +134,13 @@ const KOMODITAS = {
   }
 };
 
-/* ---------- RUTE & MODA (harga contoh) ----------
-   moda menentukan kapan rute tersedia (lihat semuaRute). dingin: bisa bawa produk sejuk/chiller. */
+/* ---------- RUTE (harga contoh) ----------
+   Wilayah layanan: dari Jawa Tengah ke kota-kota di Pulau Jawa, semuanya lewat darat.
+   dingin: bisa bawa produk sejuk/chiller. */
 const RUTE = [
-  { id: 'darat-reg',  nama: 'Darat reguler',             moda: 'Darat', perKg: 3500,  hari: [4, 6],  dingin: false, mitra: 'Ekspedisi darat mitra' },
-  { id: 'darat-exp',  nama: 'Darat express',             moda: 'Darat', perKg: 6000,  hari: [2, 3],  dingin: false, mitra: 'Ekspedisi darat mitra' },
-  { id: 'darat-dgn',  nama: 'Truk berpendingin',         moda: 'Darat', perKg: 8500,  hari: [2, 3],  dingin: true,  antarPulau: false, mitra: 'Truk berpendingin mitra' },
-  { id: 'laut-krg',   nama: 'Laut, kontainer kering',    moda: 'Laut',  perKg: 2500,  hari: [7, 12], dingin: false,  mitra: 'Pelayaran kargo mitra' },
-  { id: 'laut-dgn',   nama: 'Laut, kontainer berpendingin', moda: 'Laut', perKg: 6500, hari: [7, 12], dingin: true, mitra: 'Pelayaran kargo mitra', bukanUntuk: ['chiller'] },
-  { id: 'udara',      nama: 'Kargo udara + boks dingin', moda: 'Udara', perKg: 18000, hari: [1, 2],  dingin: true,  antarPulau: true,  mitra: 'Agen kargo udara mitra' }
+  { id: 'darat-reg',  nama: 'Darat reguler',     moda: 'Darat', perKg: 3500, hari: [2, 4], dingin: false, mitra: 'Ekspedisi kargo darat' },
+  { id: 'darat-exp',  nama: 'Darat express',     moda: 'Darat', perKg: 6000, hari: [1, 2], dingin: false, mitra: 'Ekspedisi kargo darat' },
+  { id: 'darat-dgn',  nama: 'Truk berpendingin', moda: 'Darat', perKg: 8500, hari: [1, 2], dingin: true,  mitra: 'MGM Bosco Logistics (truk berpendingin)' }
 ];
 
 const BIAYA_PLATFORM = 5000;   // fee platform per transaksi (Full Managed & Self-Packaging)
@@ -138,62 +148,29 @@ const BIAYA_JEMPUT = 150000;   // kurir lokal menjemput dari kebun atau gudang p
 const HARI_SIMPAN = 2;         // perkiraan lama barang di gudang mitra sebelum berangkat
 
 /* ---------- KOTA ----------
-   pulau menentukan apakah perlu rute laut/udara. hub = gudang mitra terdekat (contoh). */
+   asal: true = kota asal yang dilayani (Jawa Tengah), semua masuk ke gudang mitra Semarang.
+   Kota tujuan: semua kota di daftar ini (Pulau Jawa). */
+const GUDANG = 'Semarang';
+const WILAYAH_ASAL = 'Jawa Tengah';
 const KOTA = [
-  { nama: 'Takengon (Gayo)', prov: 'Aceh', pulau: 'Sumatera', hub: 'Medan', sentra: 'Kopi arabika' },
-  { nama: 'Banda Aceh', prov: 'Aceh', pulau: 'Sumatera', hub: 'Medan' },
-  { nama: 'Sidikalang', prov: 'Sumatera Utara', pulau: 'Sumatera', hub: 'Medan', sentra: 'Kopi' },
-  { nama: 'Berastagi (Karo)', prov: 'Sumatera Utara', pulau: 'Sumatera', hub: 'Medan', sentra: 'Sayur, jeruk' },
-  { nama: 'Medan', prov: 'Sumatera Utara', pulau: 'Sumatera', hub: 'Medan' },
-  { nama: 'Padang', prov: 'Sumatera Barat', pulau: 'Sumatera', hub: 'Padang' },
-  { nama: 'Pekanbaru', prov: 'Riau', pulau: 'Sumatera', hub: 'Padang' },
-  { nama: 'Kerinci', prov: 'Jambi', pulau: 'Sumatera', hub: 'Padang', sentra: 'Kayu manis' },
-  { nama: 'Jambi', prov: 'Jambi', pulau: 'Sumatera', hub: 'Palembang' },
-  { nama: 'Bengkulu', prov: 'Bengkulu', pulau: 'Sumatera', hub: 'Palembang' },
-  { nama: 'Pagar Alam', prov: 'Sumatera Selatan', pulau: 'Sumatera', hub: 'Palembang', sentra: 'Kopi robusta' },
-  { nama: 'Palembang', prov: 'Sumatera Selatan', pulau: 'Sumatera', hub: 'Palembang' },
-  { nama: 'Lampung Barat', prov: 'Lampung', pulau: 'Sumatera', hub: 'Bandar Lampung', sentra: 'Kopi robusta' },
-  { nama: 'Bandar Lampung', prov: 'Lampung', pulau: 'Sumatera', hub: 'Bandar Lampung' },
-  { nama: 'Bangka', prov: 'Kep. Bangka Belitung', pulau: 'Bangka', hub: 'Palembang', sentra: 'Lada' },
-  { nama: 'Batam', prov: 'Kep. Riau', pulau: 'Batam', hub: 'Padang' },
-  { nama: 'Jakarta', prov: 'DKI Jakarta', pulau: 'Jawa', hub: 'Jakarta' },
-  { nama: 'Bogor', prov: 'Jawa Barat', pulau: 'Jawa', hub: 'Jakarta' },
-  { nama: 'Bandung', prov: 'Jawa Barat', pulau: 'Jawa', hub: 'Bandung' },
-  { nama: 'Lembang', prov: 'Jawa Barat', pulau: 'Jawa', hub: 'Bandung', sentra: 'Sayur' },
-  { nama: 'Garut', prov: 'Jawa Barat', pulau: 'Jawa', hub: 'Bandung', sentra: 'Kopi, sayur' },
-  { nama: 'Indramayu', prov: 'Jawa Barat', pulau: 'Jawa', hub: 'Bandung', sentra: 'Mangga' },
-  { nama: 'Semarang', prov: 'Jawa Tengah', pulau: 'Jawa', hub: 'Semarang' },
-  { nama: 'Temanggung', prov: 'Jawa Tengah', pulau: 'Jawa', hub: 'Semarang', sentra: 'Kopi' },
-  { nama: 'Wonosobo (Dieng)', prov: 'Jawa Tengah', pulau: 'Jawa', hub: 'Semarang', sentra: 'Sayur' },
-  { nama: 'Yogyakarta', prov: 'DI Yogyakarta', pulau: 'Jawa', hub: 'Semarang' },
-  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', pulau: 'Jawa', hub: 'Semarang' },
-  { nama: 'Surabaya', prov: 'Jawa Timur', pulau: 'Jawa', hub: 'Surabaya' },
-  { nama: 'Malang', prov: 'Jawa Timur', pulau: 'Jawa', hub: 'Surabaya' },
-  { nama: 'Batu', prov: 'Jawa Timur', pulau: 'Jawa', hub: 'Surabaya', sentra: 'Sayur, apel' },
-  { nama: 'Lumajang', prov: 'Jawa Timur', pulau: 'Jawa', hub: 'Surabaya', sentra: 'Pisang' },
-  { nama: 'Probolinggo', prov: 'Jawa Timur', pulau: 'Jawa', hub: 'Surabaya', sentra: 'Mangga' },
-  { nama: 'Kintamani', prov: 'Bali', pulau: 'Bali', hub: 'Denpasar', sentra: 'Kopi arabika' },
-  { nama: 'Denpasar', prov: 'Bali', pulau: 'Bali', hub: 'Denpasar' },
-  { nama: 'Mataram', prov: 'Nusa Tenggara Barat', pulau: 'Lombok', hub: 'Denpasar' },
-  { nama: 'Bajawa (Flores)', prov: 'Nusa Tenggara Timur', pulau: 'Flores', hub: 'Kupang', sentra: 'Kopi arabika' },
-  { nama: 'Kupang', prov: 'Nusa Tenggara Timur', pulau: 'Timor', hub: 'Kupang' },
-  { nama: 'Pontianak', prov: 'Kalimantan Barat', pulau: 'Kalimantan', hub: 'Banjarmasin' },
-  { nama: 'Banjarmasin', prov: 'Kalimantan Selatan', pulau: 'Kalimantan', hub: 'Banjarmasin' },
-  { nama: 'Balikpapan', prov: 'Kalimantan Timur', pulau: 'Kalimantan', hub: 'Balikpapan' },
-  { nama: 'Samarinda', prov: 'Kalimantan Timur', pulau: 'Kalimantan', hub: 'Balikpapan' },
-  { nama: 'Makassar', prov: 'Sulawesi Selatan', pulau: 'Sulawesi', hub: 'Makassar' },
-  { nama: 'Tana Toraja', prov: 'Sulawesi Selatan', pulau: 'Sulawesi', hub: 'Makassar', sentra: 'Kopi arabika' },
-  { nama: 'Enrekang', prov: 'Sulawesi Selatan', pulau: 'Sulawesi', hub: 'Makassar', sentra: 'Kopi, sayur' },
-  { nama: 'Palu', prov: 'Sulawesi Tengah', pulau: 'Sulawesi', hub: 'Makassar', sentra: 'Kakao' },
-  { nama: 'Kendari', prov: 'Sulawesi Tenggara', pulau: 'Sulawesi', hub: 'Makassar' },
-  { nama: 'Gorontalo', prov: 'Gorontalo', pulau: 'Sulawesi', hub: 'Manado' },
-  { nama: 'Manado', prov: 'Sulawesi Utara', pulau: 'Sulawesi', hub: 'Manado' },
-  { nama: 'Ambon', prov: 'Maluku', pulau: 'Ambon', hub: 'Ambon' },
-  { nama: 'Banda Neira', prov: 'Maluku', pulau: 'Banda', hub: 'Ambon', sentra: 'Pala' },
-  { nama: 'Ternate', prov: 'Maluku Utara', pulau: 'Ternate', hub: 'Ambon', sentra: 'Cengkih' },
-  { nama: 'Sorong', prov: 'Papua Barat Daya', pulau: 'Papua', hub: 'Jayapura' },
-  { nama: 'Jayapura', prov: 'Papua', pulau: 'Papua', hub: 'Jayapura' }
+  { nama: 'Temanggung', prov: 'Jawa Tengah', asal: true, sentra: 'Kopi' },
+  { nama: 'Wonosobo (Dieng)', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
+  { nama: 'Banjarnegara', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur, kentang' },
+  { nama: 'Magelang', prov: 'Jawa Tengah', asal: true, sentra: 'Sayur' },
+  { nama: 'Semarang', prov: 'Jawa Tengah', asal: true },
+  { nama: 'Surakarta (Solo)', prov: 'Jawa Tengah', asal: true },
+  { nama: 'Jakarta', prov: 'DKI Jakarta' },
+  { nama: 'Bogor', prov: 'Jawa Barat' },
+  { nama: 'Depok', prov: 'Jawa Barat' },
+  { nama: 'Bekasi', prov: 'Jawa Barat' },
+  { nama: 'Tangerang', prov: 'Banten' },
+  { nama: 'Bandung', prov: 'Jawa Barat' },
+  { nama: 'Cirebon', prov: 'Jawa Barat' },
+  { nama: 'Yogyakarta', prov: 'DI Yogyakarta' },
+  { nama: 'Surabaya', prov: 'Jawa Timur' },
+  { nama: 'Malang', prov: 'Jawa Timur' }
 ];
+const KOTA_ASAL = KOTA.filter((k) => k.asal);
 
 /* ---------- STATE ---------- */
 const STORAGE_KEY = 'transportx.v2.history';
@@ -261,28 +238,11 @@ const ILUS = {
 };
 const ilustrasi = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ILUS[k] || ILUS.wadah}</svg>`;
 
-/* ---------- RUTE ----------
-   Sumatera, Jawa, Bali, dan Lombok tersambung kapal penyeberangan (ro-ro),
-   jadi truk bisa lewat darat. Pulau lain butuh laut atau udara. */
-const DARAT_TERSAMBUNG = ['Sumatera', 'Jawa', 'Bali', 'Lombok'];
-function hubungan() {
-  const a = kota(state.shipment.asal).pulau, t = kota(state.shipment.tujuan).pulau;
-  const lewatDarat = a === t || (DARAT_TERSAMBUNG.includes(a) && DARAT_TERSAMBUNG.includes(t));
-  return { lewatDarat, bedaPulau: a !== t };
-}
-function antarPulau() { return hubungan().bedaPulau; }
-
 /* semua rute dengan status bisa / alasan tidak bisa */
 function semuaRute() {
   const k = komoditas();
-  const { lewatDarat, bedaPulau } = hubungan();
   return RUTE.map((r) => {
-    let alasan = '';
-    if (r.moda === 'Darat' && !lewatDarat) alasan = 'Tidak ada jalur darat ke tujuan ini';
-    else if (r.moda === 'Laut' && lewatDarat) alasan = 'Tujuan bisa dicapai lewat darat';
-    else if (r.moda === 'Udara' && !bedaPulau) alasan = 'Hanya untuk antarpulau';
-    else if (k.simpan !== 'kering' && !r.dingin) alasan = 'Tanpa pendingin, tidak cocok untuk produk ini';
-    else if (r.bukanUntuk && r.bukanUntuk.includes(k.simpan)) alasan = 'Terlalu lama untuk sayuran daun';
+    const alasan = k.simpan !== 'kering' && !r.dingin ? 'Tanpa pendingin, tidak cocok untuk produk ini' : '';
     return { ...r, bisa: !alasan, alasan };
   });
 }
@@ -303,7 +263,7 @@ function hitungManaged() {
   const rincian = [];
   if (state.managed.serah === 'jemput') rincian.push(['Jemput dari lokasi Anda (kurir lokal)', BIAYA_JEMPUT]);
   rincian.push([`Cek mutu dan pengemasan (${berat.toLocaleString('id-ID')} kg)`, k.handlingPerKg * berat]);
-  rincian.push([`Sewa ${ruang.nama.toLowerCase()}, ${HARI_SIMPAN} hari`, ruang.sewaPerKgHari * berat * HARI_SIMPAN]);
+  rincian.push([`Sewa ${ruangKecil(k.simpan)}, ${HARI_SIMPAN} hari`, ruang.sewaPerKgHari * berat * HARI_SIMPAN]);
   rincian.push([`Ongkos kirim: ${r.nama}`, r.perKg * berat]);
   rincian.push(['Fee platform', BIAYA_PLATFORM]);
   return { rute: r, rincian, total: rincian.reduce((t, [, v]) => t + v, 0) };
@@ -335,6 +295,43 @@ function kartuPerlindungan() {
     </div>`;
 }
 
+/* Siapa yang mengerjakan tiap bagian kiriman: TransportX mengatur, fasilitas dan armada milik mitra.
+   d: { layanan, serah, hub, simpan, rute } */
+function kartuPelaksana(d) {
+  const label = { tx: 'TransportX', mitra: 'Mitra', anda: 'Anda' };
+  const baris = d.layanan === 'Full Managed'
+    ? [
+        ['Atur rute, jadwal, dan status', 'Aplikasi dan admin TransportX', 'tx'],
+        d.serah === 'jemput'
+          ? ['Jemput dari lokasi Anda', KURIR_LOKAL, 'mitra']
+          : ['Antar ke gudang mitra', 'Anda', 'anda'],
+        ['Cek mutu dan foto', 'Petugas QC TransportX', 'tx'],
+        [`Kemas dan simpan (${ruangKecil(d.simpan)})`, namaGudang(d.simpan, d.hub), 'mitra'],
+        [`Angkut lewat ${d.rute.moda.toLowerCase()}`, d.rute.mitra, 'mitra'],
+        ['Urus klaim kalau ada kerusakan', 'CS TransportX', 'tx']
+      ]
+    : [
+        ['Panduan kemas dan pilihan ekspedisi', 'Aplikasi TransportX', 'tx'],
+        ['Kemas barang sesuai panduan', 'Anda', 'anda'],
+        [`Jemput dan angkut lewat ${d.rute.moda.toLowerCase()}`, d.rute.mitra, 'mitra'],
+        ['Pantau status dan urus klaim', 'Admin dan CS TransportX', 'tx']
+      ];
+  return `
+    <div class="info-card who-card">
+      <h3>Siapa yang mengerjakan kiriman Anda</h3>
+      <ul class="who-list">
+        ${baris.map(([tugas, siapa, jenis]) => `
+          <li>
+            <span class="who-task">${escapeHTML(tugas)}</span>
+            <span class="who-name">${escapeHTML(siapa)}<em class="who-tag ${jenis}">${label[jenis]}</em></span>
+          </li>`).join('')}
+      </ul>
+      <p class="value-disclaimer">${d.layanan === 'Full Managed'
+        ? 'TransportX tidak punya gudang dan armada sendiri. Fasilitas mitra disewa per kiriman, TransportX mengatur dan mengecek mutunya.'
+        : 'TransportX tidak punya armada sendiri. Ekspedisi mitra dibayar per kiriman, TransportX memberi panduan dan memantau statusnya.'} ${CATATAN_MITRA}</p>
+    </div>`;
+}
+
 /* ---------- NAVIGASI ---------- */
 const RENDER = {
   layanan: () => renderLayanan(),
@@ -362,22 +359,22 @@ function back() { if (state.navStack.length > 1) state.navStack.pop(); show(stat
 function resetTo(screen) { state.navStack = [screen]; show(screen); }
 
 /* ---------- DROPDOWN KOTA YANG BISA DICARI ---------- */
-function buatCombo(idWrap, { sentraDulu = false, onPilih } = {}) {
+function buatCombo(idWrap, { daftar = KOTA, sentraDulu = false, onPilih, kosong = 'Kota tidak ditemukan. Pilih kota terdekat.' } = {}) {
   const wrap = $('#' + idWrap);
   const input = wrap.querySelector('input');
   const list = wrap.querySelector('.combo-list');
   let hasil = [];
   let sorot = -1;
 
-  const urutan = () => (sentraDulu ? [...KOTA].sort((a, b) => (b.sentra ? 1 : 0) - (a.sentra ? 1 : 0)) : KOTA);
+  const urutan = () => (sentraDulu ? [...daftar].sort((a, b) => (b.sentra ? 1 : 0) - (a.sentra ? 1 : 0)) : daftar);
   const saring = (q) => {
     const t = q.trim().toLowerCase();
     if (!t) return urutan();
-    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.pulau} ${k.sentra || ''}`.toLowerCase().includes(t));
+    return urutan().filter((k) => `${k.nama} ${k.prov} ${k.sentra || ''}`.toLowerCase().includes(t));
   };
 
   function render() {
-    if (!hasil.length) { list.innerHTML = '<li class="combo-empty">Kota tidak ditemukan. Pilih kota terdekat.</li>'; return; }
+    if (!hasil.length) { list.innerHTML = `<li class="combo-empty">${kosong}</li>`; return; }
     list.innerHTML = hasil.map((k, i) => `
       <li class="combo-item${i === sorot ? ' active' : ''}" role="option" aria-selected="${i === sorot}" data-nama="${escapeHTML(k.nama)}">
         <span class="combo-text"><strong>${escapeHTML(k.nama)}</strong><span>${escapeHTML(k.prov)}</span></span>
@@ -421,10 +418,9 @@ function buatCombo(idWrap, { sentraDulu = false, onPilih } = {}) {
   input.addEventListener('blur', () => setTimeout(tutup, 0));
 }
 
-function bacaKota(input) {
-  if (input.dataset.terpilih) return input.dataset.terpilih;
-  const t = input.value.trim().toLowerCase();
-  const k = KOTA.find((k) => k.nama.toLowerCase() === t);
+function bacaKota(input, daftar = KOTA) {
+  const t = (input.dataset.terpilih || input.value).trim().toLowerCase();
+  const k = daftar.find((k) => k.nama.toLowerCase() === t);
   return k ? k.nama : null;
 }
 
@@ -436,7 +432,7 @@ function isiDropdownKomoditas() {
 }
 function updateKomoditasHelp() {
   const k = KOMODITAS[$('#f-komoditas').value];
-  $('#komoditas-help').innerHTML = `Disimpan di <b>${RUANG[k.simpan].nama.toLowerCase()}</b>, kelembapan ${k.lembab}.`;
+  $('#komoditas-help').innerHTML = `Disimpan di <b>${ruangKecil(k.simpan)}</b>, kelembapan ${k.lembab}.`;
 }
 function tampilkanHub(k) {
   const el = $('#hub-card');
@@ -444,20 +440,20 @@ function tampilkanHub(k) {
   el.hidden = false;
   el.innerHTML = `
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg>
-    <div><strong>Gudang mitra terdekat: ${escapeHTML(k.hub)}</strong>
+    <div><strong>Gudang mitra: ${GUDANG}</strong>
     <span>Bisa antar sendiri, atau dijemput kurir lokal dari ${escapeHTML(k.nama)}. Lokasi mitra masih contoh.</span></div>`;
 }
 
 function validasiInput() {
   const berat = Number($('#f-berat').value);
   const nilai = angkaDariTeks($('#f-nilai').value);
-  const asal = bacaKota($('#f-asal'));
+  const asal = bacaKota($('#f-asal'), KOTA_ASAL);
   const tujuan = bacaKota($('#f-tujuan'));
   $$('#screen-input input').forEach((i) => i.classList.remove('invalid'));
 
   if (!berat || berat < 1) { $('#f-berat').classList.add('invalid'); return toast('Isi berat minimal 1 kg.'); }
   if (!nilai) { $('#f-nilai').classList.add('invalid'); return toast('Isi nilai barang. Ini dipakai sebagai dasar klaim.'); }
-  if (!asal) { $('#f-asal').classList.add('invalid'); return toast('Pilih kota asal dari daftar.'); }
+  if (!asal) { $('#f-asal').classList.add('invalid'); return toast(`Pilih kota asal di ${WILAYAH_ASAL} dari daftar.`); }
   if (!tujuan) { $('#f-tujuan').classList.add('invalid'); return toast('Pilih kota tujuan dari daftar.'); }
   if (asal === tujuan) { $('#f-tujuan').classList.add('invalid'); return toast('Kota asal dan tujuan tidak boleh sama.'); }
 
@@ -487,7 +483,7 @@ function renderLayanan() {
 function renderManaged() {
   const k = komoditas();
   const s = state.shipment;
-  const hub = kota(s.asal).hub;
+  const hub = GUDANG;
   const h = ruteHemat(), c = ruteCepat();
   const sama = h.id === c.id;
   if (sama) state.managed.prioritas = 'hemat';
@@ -507,18 +503,17 @@ function renderManaged() {
     <div class="choice-list" role="radiogroup" aria-label="Cara serah barang">
       <button class="choice ${state.managed.serah === 'antar' ? 'selected' : ''}" data-serah="antar" role="radio" aria-checked="${state.managed.serah === 'antar'}">
         <span class="radio"></span>
-        <span class="choice-info"><strong>Antar sendiri ke gudang mitra</strong><span>Gudang mitra ${escapeHTML(hub)}</span></span>
+        <span class="choice-info"><strong>Antar sendiri ke gudang mitra</strong><span>${escapeHTML(namaGudang(k.simpan, hub))}</span></span>
         <span class="choice-price">Gratis</span>
       </button>
       <button class="choice ${state.managed.serah === 'jemput' ? 'selected' : ''}" data-serah="jemput" role="radio" aria-checked="${state.managed.serah === 'jemput'}">
         <span class="radio"></span>
-        <span class="choice-info"><strong>Dijemput dari kebun atau gudang Anda</strong><span>Oleh kurir lokal mitra di ${escapeHTML(s.asal)}</span></span>
+        <span class="choice-info"><strong>Dijemput dari kebun atau gudang Anda</strong><span>Oleh kurir lokal setempat di ${escapeHTML(s.asal)}</span></span>
         <span class="choice-price">${rupiah(BIAYA_JEMPUT)}</span>
       </button>
     </div>
 
     <h2 class="section-label">Pilih rute</h2>
-    ${antarPulau() ? `<p class="hint">${hubungan().lewatDarat ? 'Beda pulau tapi tersambung kapal penyeberangan, truk bisa ikut menyeberang.' : 'Beda pulau: barang diangkut ke pelabuhan atau bandara, lalu menyeberang.'}</p>` : ''}
     <div class="choice-list" role="radiogroup" aria-label="Prioritas rute">
       ${opsiRute('hemat', sama ? 'Rute yang tersedia' : 'Hemat', h)}
       ${sama ? '' : opsiRute('cepat', 'Cepat', c)}
@@ -529,12 +524,14 @@ function renderManaged() {
       <h3>Yang kami kerjakan</h3>
       <ol class="steps">
         <li><b>1</b>${state.managed.serah === 'jemput' ? 'Kurir lokal menjemput barang' : 'Anda antar barang'} ke gudang mitra ${escapeHTML(hub)}</li>
-        <li><b>2</b>Petugas cek mutu: timbang, ukur kadar air atau suhu, lalu foto</li>
+        <li><b>2</b>Petugas QC kami cek mutu: timbang, ukur kadar air atau suhu, lalu foto</li>
         <li><b>3</b>Dikemas sesuai panduan ${k.nama.toLowerCase()}, difoto lagi</li>
-        <li><b>4</b>Disimpan di ${ruang.nama.toLowerCase()} sampai berangkat</li>
+        <li><b>4</b>Disimpan di ${ruangKecil(k.simpan)} sampai berangkat</li>
         <li><b>5</b>Dikirim lewat ${r.nama.toLowerCase()}, ${hariTeks(r)}</li>
       </ol>
     </div>
+
+    ${kartuPelaksana({ layanan: 'Full Managed', serah: state.managed.serah, hub, simpan: k.simpan, rute: r })}
 
     <div class="info-card">
       <h3>Rincian biaya</h3>
@@ -550,7 +547,7 @@ function lanjutManaged() {
   const h = hitungManaged();
   state.draft = {
     layanan: 'Full Managed', serah: state.managed.serah, rute: h.rute,
-    rincian: h.rincian, total: h.total, hub: kota(state.shipment.asal).hub
+    rincian: h.rincian, total: h.total, hub: GUDANG
   };
   go('bayar');
 }
@@ -580,9 +577,9 @@ function renderSelf() {
         <span class="check-box"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
       </label>
     </li>`).join('');
-  $('#self-exp-hint').textContent = k.simpan === 'kering'
-    ? 'Harga sudah dihitung dari berat barang Anda.'
-    : 'Produk ini harus memakai ekspedisi berpendingin.';
+  $('#self-exp-hint').textContent = (k.simpan === 'kering'
+    ? 'Harga sudah dihitung dari berat barang Anda. '
+    : 'Produk ini harus memakai ekspedisi berpendingin. ') + CATATAN_MITRA;
   renderEkspedisi();
   updateSelfUI();
 }
@@ -624,7 +621,7 @@ function updateSelfUI() {
   setStep(3, state.selectedExp ? 'done' : semua ? 'current' : '');
 
   const r = RUTE.find((x) => x.id === state.selectedExp);
-  $('#self-cost').innerHTML = r ? `<h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}${kartuPerlindungan()}` : '';
+  $('#self-cost').innerHTML = r ? `<h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}${kartuPerlindungan()}${kartuPelaksana({ layanan: 'Self-Packaging', rute: r })}` : '';
 
   $('#btn-confirm-self').disabled = !(semua && r);
   $('#self-footer-note').textContent = !semua ? `Selesaikan langkah mengemas (${selesai}/${total}).` : !r ? 'Pilih ekspedisi untuk melanjutkan.' : '';
@@ -666,6 +663,8 @@ function renderBayar() {
       <h3>Rincian biaya</h3>
       ${rincianHTML(d.rincian, d.total)}
     </div>
+
+    ${kartuPelaksana({ ...d, simpan: komoditas().simpan })}
 
     <h2 class="section-label">Metode pembayaran</h2>
     <div class="choice-list" role="radiogroup" aria-label="Metode pembayaran">
@@ -733,22 +732,24 @@ function batalPesanan() {
 
 /* ---------- LACAK: TAHAPAN, FOTO, PENANGGUNG JAWAB ---------- */
 function tahapan(d) {
-  const ruang = RUANG[d.simpan].nama.toLowerCase();
+  const ruang = ruangKecil(d.simpan);
+  const gudang = namaGudang(d.simpan, d.hub);
+  const belumDiserahkan = 'Anda (barang belum diserahkan)';
   if (d.layanan === 'Full Managed') {
     return [
-      { judul: 'Pesanan dibayar', oleh: 'TransportX' },
+      { judul: 'Pesanan dibayar', oleh: 'TransportX', tanggungan: belumDiserahkan },
       d.serah === 'jemput'
-        ? { judul: 'Dijemput kurir lokal', oleh: 'Kurir lokal mitra', lokasi: d.asal }
-        : { judul: 'Diantar ke gudang mitra', oleh: 'Pengirim', lokasi: `Menuju gudang mitra ${d.hub}` },
-      { judul: 'Diterima dan dicek mutunya', oleh: 'Gudang mitra', lokasi: `Gudang mitra ${d.hub}`, foto: 'Foto saat diterima: timbang dan cek kondisi' },
-      { judul: 'Dikemas sesuai panduan', oleh: 'Gudang mitra', lokasi: `Gudang mitra ${d.hub}`, foto: 'Foto setelah dikemas' },
-      { judul: `Disimpan di ${ruang}`, oleh: 'Gudang mitra', lokasi: `Gudang mitra ${d.hub}`, catatan: 'Suhu dicatat alat pencatat suhu' },
+        ? { judul: 'Dijemput kurir lokal', oleh: KURIR_LOKAL, lokasi: d.asal }
+        : { judul: 'Diantar ke gudang mitra', oleh: 'Pengirim', lokasi: `Menuju ${gudang}` },
+      { judul: 'Diterima dan dicek mutunya', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: gudang, foto: 'Foto saat diterima: timbang dan cek kondisi' },
+      { judul: 'Dikemas sesuai panduan', oleh: 'Petugas QC TransportX dan gudang mitra', tanggungan: gudang, lokasi: gudang, foto: 'Foto setelah dikemas' },
+      { judul: `Disimpan di ${ruang}`, oleh: gudang, lokasi: gudang, catatan: 'Suhu dicatat alat pencatat suhu' },
       { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: d.rute.mitra, lokasi: `Menuju ${d.tujuan}` },
       { judul: 'Tiba di tujuan', oleh: d.rute.mitra, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
     ];
   }
   return [
-    { judul: 'Pesanan dibayar', oleh: 'TransportX' },
+    { judul: 'Pesanan dibayar', oleh: 'TransportX', tanggungan: belumDiserahkan },
     { judul: 'Dijemput ekspedisi', oleh: d.rute.mitra, lokasi: d.asal, foto: 'Foto kemasan saat dijemput' },
     { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: d.rute.mitra, lokasi: `Menuju ${d.tujuan}` },
     { judul: 'Tiba di tujuan', oleh: d.rute.mitra, lokasi: d.tujuan, foto: 'Foto saat tiba dan diterima' }
@@ -823,12 +824,14 @@ function renderRingkasan(d) {
       <div class="detail-row"><span>Dibayar</span><strong>${rupiah(d.total)} · ${d.metode}</strong></div>
     </div>
 
+    ${kartuPelaksana(d)}
+
     <div class="protect-card">
       <div class="protect-head">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
         <strong>Ada masalah dengan barang?</strong>
       </div>
-      <p>Saat ini barang menjadi tanggungan <b>${sekarang.oleh}</b>. Ajukan klaim, CS kami bandingkan dengan foto cek mutu.</p>
+      <p>Saat ini barang menjadi tanggungan <b>${escapeHTML(sekarang.tanggungan || sekarang.oleh)}</b>. Ajukan klaim, CS kami bandingkan dengan foto cek mutu.</p>
       <div class="btn-row">
         <button class="btn btn-ghost" data-go="klaim">Ajukan klaim</button>
         <button class="link-inline" data-go="perlindungan">Aturan klaim</button>
@@ -1164,6 +1167,9 @@ if (!new URLSearchParams(location.search).has('moderator')) $('#btn-panel-open')
 muatDariStorage();
 muatFeedback();
 isiDropdownKomoditas();
-buatCombo('combo-asal', { sentraDulu: true, onPilih: tampilkanHub });
-buatCombo('combo-tujuan');
+buatCombo('combo-asal', {
+  daftar: KOTA_ASAL, sentraDulu: true, onPilih: tampilkanHub,
+  kosong: `Belum dilayani. Saat ini barang hanya diambil dari ${WILAYAH_ASAL}.`
+});
+buatCombo('combo-tujuan', { daftar: [...KOTA.filter((k) => !k.asal), ...KOTA_ASAL], kosong:'Belum dilayani. Tujuan pengiriman saat ini kota-kota di Pulau Jawa.' });
 show('home');
