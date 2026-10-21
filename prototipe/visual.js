@@ -205,7 +205,7 @@ function petaCakupan() {
 
 /* ---------- GRAFIK PEMBAGIAN BIAYA ----------
    Satu batang bertumpuk: bagian yang diteruskan ke mitra vs yang diterima TransportX. */
-const BIAYA_TRANSPORTX = ['Cek mutu dan pengemasan', 'Fee platform'];
+const BIAYA_TRANSPORTX = ['Jasa cek mutu', 'Fee platform'];
 const pihakBiaya = (label) => (BIAYA_TRANSPORTX.some((p) => label.startsWith(p)) ? 'tx' : 'mitra');
 
 function grafikBiaya(rincian) {
@@ -215,8 +215,8 @@ function grafikBiaya(rincian) {
   if (!total) return '';
   const pct = (v) => Math.round((v / total) * 100);
   const bagian = [
-    { id: 'mitra', nama: 'Diteruskan ke mitra', ket: 'gudang, ekspedisi, kurir', nilai: jumlah.mitra },
-    { id: 'tx', nama: 'Diterima TransportX', ket: 'fee platform, cek mutu dan kemas', nilai: jumlah.tx }
+    { id: 'mitra', nama: 'Diteruskan ke mitra', ket: 'gudang, ekspedisi, kurir, bahan kemasan', nilai: jumlah.mitra },
+    { id: 'tx', nama: 'Diterima TransportX', ket: 'fee platform dan jasa cek mutu', nilai: jumlah.tx }
   ].filter((b) => b.nilai > 0);
   return `
     <div class="biaya-viz">

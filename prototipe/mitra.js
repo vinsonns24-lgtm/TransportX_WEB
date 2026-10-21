@@ -59,6 +59,7 @@ function kartuMitra(m) {
         <div><dt>Area</dt><dd>${escapeHTML(m.area)}</dd></div>
         <div><dt>Dipakai untuk</dt><dd>${escapeHTML(m.dipakai)}</dd></div>
         <div><dt>Tarif (contoh)</dt><dd>${escapeHTML(m.tarif)}</dd></div>
+        ${m.dasarTarif ? `<div><dt>Dasar tarif</dt><dd>${escapeHTML(m.dasarTarif)}</dd></div>` : ''}
       </dl>
       <ul class="mitra-fasilitas">${m.fasilitas.map((f) => `<li>${escapeHTML(f)}</li>`).join('')}</ul>
       <p class="mitra-catatan">Status: belum ada perjanjian kerja sama.${m.namaContoh ? '' : ' Disebut sebagai calon mitra di Business Model Canvas.'}</p>

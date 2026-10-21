@@ -26,7 +26,8 @@ const MITRA = [
     peran: 'Titik terima barang. Di sini petugas QC TransportX mengecek mutu, mengemas, lalu barang disimpan sampai berangkat.',
     fasilitas: ['Ruang ber-AC ±20–25°C, kelembapan 50–60%', 'Palet kayu, karung tidak menyentuh lantai', 'Meja cek mutu dan area kemas untuk petugas QC'],
     dipakai: 'Kopi, rempah, dan kakao kering (Full Managed)',
-    tarif: 'Sewa Rp100/kg per hari'
+    tarif: 'Sewa Rp25/kg per hari, minimal Rp15.000 per kiriman',
+    dasarTarif: 'Perkiraan dari sewa gudang ±Rp100.000/m² per bulan'
   },
   {
     id: 'mgm-bosco', nama: 'MGM Bosco Logistics', label: 'Cold storage', jenis: 'gudang', namaContoh: false,
@@ -35,7 +36,8 @@ const MITRA = [
     peran: 'Menyimpan produk segar di ruang sejuk atau chiller, lalu mengangkutnya dengan truk berpendingin.',
     fasilitas: ['Ruang sejuk 13–15°C untuk buah tropis', 'Chiller 0–2°C untuk sayuran daun', 'Truk berpendingin; data logger suhu dari TransportX ikut di dalam'],
     dipakai: 'Buah tropis, cabai, dan sayur',
-    tarif: 'Sewa Rp250–300/kg per hari · angkut Rp8.500/kg'
+    tarif: 'Sewa Rp250–300/kg per hari (minimal Rp15.000) · angkut Rp4.000/kg (≥50 kg) atau Rp5.000/kg (20–49 kg)',
+    dasarTarif: 'Tarif cold storage Rp300/kg per hari untuk di bawah 1 ton; sewa truk reefer ±Rp8 juta per trip Semarang–Jakarta, dibagi muatan gabungan ±2 ton'
   },
   {
     id: 'trans-jawa', nama: 'Trans Jawa Kargo', label: 'Ekspedisi', jenis: 'ekspedisi', namaContoh: true,
@@ -44,16 +46,18 @@ const MITRA = [
     peran: 'Mengangkut produk kering lewat jalan tol dan mengantar sampai alamat pembeli.',
     fasilitas: ['Truk boks tertutup, barang tidak kena hujan dan panas langsung', 'Berangkat setiap hari dari Semarang', 'Darat reguler 2–4 hari atau express 1–2 hari'],
     dipakai: 'Kopi, rempah, dan kakao kering',
-    tarif: 'Reguler Rp3.500/kg · express Rp6.000/kg'
+    tarif: 'Reguler Rp3.400/kg (≥50 kg) atau Rp4.040/kg (11–49 kg) · express Rp6.000/kg',
+    dasarTarif: 'Tarif LSJ Express dan Indah Cargo rute Semarang–Jakarta (express masih perkiraan)'
   },
   {
     id: 'kurir-desa', nama: 'Kurir Desa Jateng', label: 'Kurir', jenis: 'kurir', namaContoh: true,
     kategori: 'Kurir lokal',
     area: 'Temanggung, Wonosobo, Banjarnegara, Magelang, dan Solo',
     peran: 'Menjemput barang dari kebun atau gudang petani, lalu membawanya ke gudang mitra di Semarang.',
-    fasilitas: ['Pikap dan motor barang', 'Bisa masuk jalan desa dan kebun'],
+    fasilitas: ['Pickup dengan sopir, satu trip bisa dipakai beberapa petani yang searah', 'Bisa masuk jalan desa dan kebun'],
     dipakai: 'Pengirim yang tidak bisa mengantar sendiri ke gudang',
-    tarif: 'Rp150.000 per penjemputan'
+    tarif: 'Rp350.000 per trip (pickup + sopir)',
+    dasarTarif: 'Perkiraan dari sewa pickup di Semarang (±Rp187.500 untuk ±30 km); Temanggung lebih jauh'
   },
   {
     id: 'kemasan-ungaran', nama: 'Toko Kemasan Tani Ungaran', label: 'Kemasan', jenis: 'kemasan', namaContoh: true,
@@ -62,7 +66,8 @@ const MITRA = [
     peran: 'Menyediakan bahan kemasan yang dipakai petugas QC saat mengemas barang Full Managed.',
     fasilitas: ['Karung goni dan hermetic bag untuk kopi', 'Boks styrofoam dan gel pendingin untuk sayur', 'Kardus berventilasi untuk buah'],
     dipakai: 'Semua kiriman Full Managed',
-    tarif: 'Sudah termasuk di biaya cek mutu dan pengemasan'
+    tarif: 'Kopi Rp1.300/kg · rempah Rp1.500/kg · kakao Rp1.000/kg · buah Rp2.000/kg · sayur Rp2.500/kg',
+    dasarTarif: 'Perkiraan harga karung goni, hermetic bag, styrofoam, dan kardus'
   }
 ];
 const mitra = (id) => MITRA.find((m) => m.id === id);
@@ -71,7 +76,7 @@ const KURIR_LOKAL = mitra('kurir-desa').nama;
 
 /* ---------- KATEGORI PENYIMPANAN ---------- */
 const RUANG = {
-  kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 100, mitraId: 'lumbung' },
+  kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 25,  mitraId: 'lumbung' },
   sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250, mitraId: 'mgm-bosco' },
   chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300, mitraId: 'mgm-bosco' }
 };
@@ -87,7 +92,7 @@ const KOMODITAS = {
     nama: 'Biji kopi (green bean)',
     simpan: 'kering',
     suhu: '±20–25°C', lembab: '50–60%',
-    handlingPerKg: 1500,
+    kemasanPerKg: 1300,   // 2 karung goni + 2 hermetic bag per 100 kg (perkiraan)
     peringatan: 'Jangan masuk kulkas atau ruang dingin. Saat dikeluarkan, biji bisa berembun lalu berjamur.',
     kemasan: [
       { id: 'goni', nama: 'Karung goni + kantong kedap udara', ket: 'Paling umum, 30–60 kg per karung',
@@ -107,7 +112,7 @@ const KOMODITAS = {
     nama: 'Rempah kering',
     simpan: 'kering',
     suhu: '±20–25°C', lembab: 'di bawah 60%',
-    handlingPerKg: 1200,
+    kemasanPerKg: 1500,   // plastik vakum + kardus (perkiraan)
     peringatan: 'Rempah cepat menyerap lembap dan bau. Pisahkan dari barang berbau tajam.',
     kemasan: [
       { id: 'vakum', nama: 'Plastik vakum + kardus', ket: 'Paling rapat, untuk rempah bernilai tinggi',
@@ -127,7 +132,7 @@ const KOMODITAS = {
     nama: 'Biji kakao',
     simpan: 'kering',
     suhu: '±20–25°C', lembab: 'di bawah 65%',
-    handlingPerKg: 1400,
+    kemasanPerKg: 1000,   // karung goni berlapis (perkiraan)
     peringatan: 'Jangan taruh karung langsung di lantai. Pakai alas kayu supaya tidak lembap.',
     kemasan: [
       { id: 'goni', nama: 'Karung goni berlapis', ket: 'Standar untuk biji kakao',
@@ -147,7 +152,7 @@ const KOMODITAS = {
     nama: 'Buah tropis (pisang, mangga, pepaya)',
     simpan: 'sejuk',
     suhu: '13–15°C', lembab: '85–95%',
-    handlingPerKg: 2500,
+    kemasanPerKg: 2000,   // kardus berlubang + sekat (perkiraan)
     peringatan: 'Jangan disimpan di bawah 12°C atau di kulkas biasa. Kulit bisa menghitam dan buah gagal matang.',
     kemasan: [
       { id: 'kardus', nama: 'Kardus berlubang + sekat', ket: 'Untuk ekspedisi darat',
@@ -167,7 +172,7 @@ const KOMODITAS = {
     nama: 'Sayuran daun (sawi, selada, bayam)',
     simpan: 'chiller',
     suhu: '0–2°C', lembab: '90–95%',
-    handlingPerKg: 3000,
+    kemasanPerKg: 2500,   // boks styrofoam + gel pendingin (perkiraan)
     peringatan: 'Harus tetap dingin sejak dipanen. Kirim di hari yang sama setelah dikemas.',
     kemasan: [
       { id: 'styro', nama: 'Boks styrofoam + gel pendingin', ket: 'Untuk ekspedisi darat',
@@ -189,13 +194,27 @@ const KOMODITAS = {
    Wilayah layanan: dari Jawa Tengah ke kota-kota di Pulau Jawa, semuanya lewat darat.
    dingin: bisa bawa produk sejuk/chiller. */
 const RUTE = [
-  { id: 'darat-reg',  nama: 'Darat reguler',     moda: 'Darat', perKg: 3500, hari: [2, 4], dingin: false, mitraId: 'trans-jawa' },
+  { id: 'darat-reg',  nama: 'Darat reguler',     moda: 'Darat', perKg: 3400, perKgKecil: 4040, minKg: 11, hari: [2, 4], dingin: false, mitraId: 'trans-jawa' },
   { id: 'darat-exp',  nama: 'Darat express',     moda: 'Darat', perKg: 6000, hari: [1, 2], dingin: false, mitraId: 'trans-jawa' },
-  { id: 'darat-dgn',  nama: 'Truk berpendingin', moda: 'Darat', perKg: 8500, hari: [1, 2], dingin: true,  mitraId: 'mgm-bosco' }
+  { id: 'darat-dgn',  nama: 'Truk berpendingin', moda: 'Darat', perKg: 4000, perKgKecil: 5000, minKg: 20, hari: [1, 2], dingin: true,  mitraId: 'mgm-bosco' }
 ].map((r) => ({ ...r, mitra: mitra(r.mitraId).nama }));
 
-const BIAYA_PLATFORM = 5000;   // fee platform per transaksi (Full Managed & Self-Packaging)
-const BIAYA_JEMPUT = 150000;   // kurir lokal menjemput dari kebun atau gudang pengirim
+/* Harga mengikuti dokumen "Rincian Pembiayaan TransportX" (Sebastian, 20 Okt 2026).
+   Pembagian uang:
+   - Jemput, sewa gudang, ongkir  -> diteruskan ke mitra sesuai tarif mitra
+   - Bahan kemasan                -> sesuai harga beli dari pemasok
+   - Jasa cek mutu + fee platform -> pendapatan TransportX
+   Tarif acuan: ekspedisi darat Semarang-Jakarta Rp3.400/kg (>=50 kg) atau Rp4.040/kg (min. 11 kg);
+   cold storage Rp300/kg/hari untuk volume kecil; sewa truk reefer CDD Semarang-Jakarta +-Rp8 juta,
+   dibagi muatan gabungan +-2 ton = Rp4.000/kg (jadwal gabungan). */
+const FEE_PERSEN = 0.02;       // fee platform 2% dari total biaya
+const FEE_MINIMUM = 5000;      // minimal Rp5.000 per transaksi
+const JASA_QC_PER_KG = 500;    // jasa cek mutu (timbang, ukur kadar air/suhu, foto)
+const SEWA_MINIMUM = 15000;    // biaya minimum sewa gudang per kiriman
+const BIAYA_JEMPUT = 350000;   // sewa pickup + sopir per trip ke gudang mitra (bisa dibagi bila searah)
+const feePlatform = (subtotal) => Math.max(FEE_MINIMUM, Math.round(subtotal * FEE_PERSEN / 100) * 100);
+const tarifKg = (r, berat) => (r.perKgKecil && berat < 50 ? r.perKgKecil : r.perKg);
+const ongkir = (r, berat) => tarifKg(r, berat) * Math.max(berat, r.minKg || 1);
 const HARI_SIMPAN = 2;         // perkiraan lama barang di gudang mitra sebelum berangkat
 
 /* ---------- KOTA ----------
@@ -256,7 +275,7 @@ function muatDariStorage() {
 /* ---------- HELPER ---------- */
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
-const rupiah = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+const rupiah = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');   // spasi tak terputus: 'Rp' tidak terpisah dari angka
 const komoditas = () => KOMODITAS[state.shipment.key];
 const kota = (nama) => KOTA.find((k) => k.nama === nama);
 const hariTeks = (r) => `${r.hari[0]}–${r.hari[1]} hari`;
@@ -294,7 +313,8 @@ const ilustrasi = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ILUS[k] 
 function semuaRute() {
   const k = komoditas();
   return RUTE.map((r) => {
-    const alasan = k.simpan !== 'kering' && !r.dingin ? 'Tanpa pendingin, tidak cocok untuk produk ini' : '';
+    const alasan = k.simpan !== 'kering' && !r.dingin ? 'Tanpa pendingin, tidak cocok untuk produk ini'
+      : k.simpan === 'kering' && r.dingin ? 'Produk kering tidak perlu truk berpendingin' : '';
     return { ...r, bisa: !alasan, alasan };
   });
 }
@@ -312,25 +332,39 @@ function hitungManaged() {
   const k = komoditas();
   const r = ruteManaged();
   const ruang = RUANG[k.simpan];
-  const rincian = [];
-  if (state.managed.serah === 'jemput') rincian.push([`Jemput dari lokasi Anda (${KURIR_LOKAL})`, BIAYA_JEMPUT]);
-  rincian.push([`Cek mutu dan pengemasan (${berat.toLocaleString('id-ID')} kg)`, k.handlingPerKg * berat]);
-  rincian.push([`Sewa ${ruangKecil(k.simpan)} (${namaGudang(k.simpan)}), ${HARI_SIMPAN} hari`, ruang.sewaPerKgHari * berat * HARI_SIMPAN]);
-  rincian.push([`Ongkos kirim: ${r.nama} (${r.mitra})`, r.perKg * berat]);
-  rincian.push(['Fee platform', BIAYA_PLATFORM]);
+  const rincian = [];   // [label, nilai, keterangan]
+  if (state.managed.serah === 'jemput') rincian.push(['Jemput dari kebun', BIAYA_JEMPUT, `${KURIR_LOKAL} · per trip`]);
+  const sewa = ruang.sewaPerKgHari * berat * HARI_SIMPAN;
+  rincian.push([`Sewa ${ruangKecil(k.simpan)}, ${HARI_SIMPAN} hari`, Math.max(SEWA_MINIMUM, sewa),
+    `${namaGudang(k.simpan)} · ${sewa < SEWA_MINIMUM ? 'tarif minimal' : `${angka(berat)} kg × ${rupiah(ruang.sewaPerKgHari)} × ${HARI_SIMPAN} hari`}`]);
+  rincian.push([`Ongkos kirim ${r.nama.toLowerCase()}`, ongkir(r, berat), `${r.mitra} · ${rumusOngkir(r, berat)}`]);
+  rincian.push(['Bahan kemasan', k.kemasanPerKg * berat, `${mitra('kemasan-ungaran').nama} · ${angka(berat)} kg × ${rupiah(k.kemasanPerKg)}`]);
+  rincian.push(['Jasa cek mutu', JASA_QC_PER_KG * berat, `Petugas QC TransportX · ${angka(berat)} kg × ${rupiah(JASA_QC_PER_KG)}`]);
+  rincian.push(baris_fee(rincian.reduce((t, [, v]) => t + v, 0)));
   return { rute: r, rincian, total: rincian.reduce((t, [, v]) => t + v, 0) };
 }
 
 function hitungSelf(r) {
-  const rincian = [[`Ongkos kirim: ${r.nama} (${r.mitra})`, r.perKg * state.shipment.berat], ['Fee platform', BIAYA_PLATFORM]];
+  const kirim = ongkir(r, state.shipment.berat);
+  const rincian = [[`Ongkos kirim ${r.nama.toLowerCase()}`, kirim, `${r.mitra} · ${rumusOngkir(r, state.shipment.berat)}`], baris_fee(kirim)];
   return { rute: r, rincian, total: rincian.reduce((t, [, v]) => t + v, 0) };
+}
+
+const angka = (n) => n.toLocaleString('id-ID');
+const rumusOngkir = (r, berat) => {
+  const kg = Math.max(berat, r.minKg || 1);
+  return `${angka(kg)} kg × ${rupiah(tarifKg(r, berat))}${kg > berat ? ' (berat minimal)' : ''}`;
+};
+function baris_fee(subtotal) {
+  const fee = feePlatform(subtotal);
+  return ['Fee platform', fee, fee === FEE_MINIMUM ? `Minimal ${rupiah(FEE_MINIMUM)}` : `2% dari ${rupiah(subtotal)}`];
 }
 
 function rincianHTML(rincian, total) {
   return `
     ${grafikBiaya(rincian)}
     <div class="breakdown">
-      ${rincian.map(([l, v]) => `<div><span>${escapeHTML(l)}</span><strong>${rupiah(v)}</strong></div>`).join('')}
+      ${rincian.map(([l, v, ket]) => `<div><span>${escapeHTML(l)}${ket ? `<small>${escapeHTML(ket)}</small>` : ''}</span><strong>${rupiah(v)}</strong></div>`).join('')}
       <div class="breakdown-total"><span>Total</span><strong>${rupiah(total)}</strong></div>
     </div>`;
 }
@@ -526,15 +560,16 @@ function validasiInput() {
 function renderLayanan() {
   const s = state.shipment;
   const k = komoditas();
-  $('#layanan-peta').innerHTML = `${petaRute({ asal: s.asal, tujuan: s.tujuan })}
+  $('#layanan-peta').innerHTML = `
+    <div class="card-head"><h3>Ringkasan kiriman</h3><button type="button" class="link-inline" data-back>Ubah</button></div>
+    ${petaRute({ asal: s.asal, tujuan: s.tujuan })}
+    <dl class="ringkas">
+      <div><dt>Barang</dt><dd>${k.nama}, ${angka(s.berat)} kg</dd></div>
+      <div><dt>Rute</dt><dd>${escapeHTML(s.asal)} → ${escapeHTML(s.tujuan)}</dd></div>
+      <div><dt>Disimpan di</dt><dd>${RUANG[k.simpan].nama}</dd></div>
+      <div><dt>Nilai barang</dt><dd>${rupiah(s.nilai)}</dd></div>
+    </dl>
     <p class="route-note">Full Managed lewat gudang mitra ${GUDANG}. Self-Packaging dijemput ekspedisi langsung dari ${escapeHTML(s.asal)}.</p>`;
-  $('#layanan-summary').innerHTML = `
-    <div><span>Komoditas</span><strong>${k.nama}</strong></div>
-    <div><span>Berat</span><strong>${s.berat.toLocaleString('id-ID')} kg</strong></div>
-    <div><span>Dari</span><strong>${escapeHTML(s.asal)}</strong></div>
-    <div><span>Ke</span><strong>${escapeHTML(s.tujuan)}</strong></div>
-    <div><span>Disimpan di</span><strong>${RUANG[k.simpan].nama}</strong></div>
-    <div><span>Nilai barang</span><strong>${rupiah(s.nilai)}</strong></div>`;
   const simpan = state.managed.prioritas;
   state.managed.prioritas = 'hemat';
   $('#price-managed').textContent = 'Mulai ' + rupiah(hitungManaged().total);
@@ -558,7 +593,7 @@ function renderManaged() {
     <button class="choice ${state.managed.prioritas === id ? 'selected' : ''}" data-prioritas="${id}" role="radio" aria-checked="${state.managed.prioritas === id}">
       <span class="radio"></span>
       <span class="choice-info"><strong>${judul}</strong><span>${rute.nama} oleh ${rute.mitra}, ${hariTeks(rute)}</span></span>
-      <span class="choice-price">${rupiah(rute.perKg * s.berat)}</span>
+      <span class="choice-price">${rupiah(ongkir(rute, s.berat))}</span>
     </button>`;
 
   $('#managed-content').innerHTML = `
@@ -572,7 +607,7 @@ function renderManaged() {
       </button>
       <button class="choice ${state.managed.serah === 'jemput' ? 'selected' : ''}" data-serah="jemput" role="radio" aria-checked="${state.managed.serah === 'jemput'}">
         <span class="radio"></span>
-        <span class="choice-info"><strong>Dijemput dari kebun atau gudang Anda</strong><span>Oleh kurir lokal setempat di ${escapeHTML(s.asal)}</span></span>
+        <span class="choice-info"><strong>Dijemput dari kebun atau gudang Anda</strong><span>Pickup ${escapeHTML(KURIR_LOKAL)} dari ${escapeHTML(s.asal)}, per trip</span></span>
         <span class="choice-price">${rupiah(BIAYA_JEMPUT)}</span>
       </button>
     </div>
@@ -583,17 +618,6 @@ function renderManaged() {
       ${sama ? '' : opsiRute('cepat', 'Cepat', c)}
     </div>
     ${sama ? `<p class="hint">Untuk produk dan tujuan ini hanya ada satu rute yang sesuai.</p>` : ''}
-
-    <div class="info-card">
-      <h3>Yang kami kerjakan</h3>
-      <ol class="steps">
-        <li><b>1</b>${state.managed.serah === 'jemput' ? 'Kurir lokal menjemput barang' : 'Anda antar barang'} ke gudang mitra ${escapeHTML(hub)}</li>
-        <li><b>2</b>Petugas QC kami cek mutu: timbang, ukur kadar air atau suhu, lalu foto</li>
-        <li><b>3</b>Dikemas sesuai panduan ${k.nama.toLowerCase()}, difoto lagi</li>
-        <li><b>4</b>Disimpan di ${ruangKecil(k.simpan)} sampai berangkat</li>
-        <li><b>5</b>Dikirim lewat ${r.nama.toLowerCase()}, ${hariTeks(r)}</li>
-      </ol>
-    </div>
 
     ${kartuPelaksana({ layanan: 'Full Managed', serah: state.managed.serah, hub, simpan: k.simpan, rute: r, tujuan: s.tujuan })}
 
@@ -950,7 +974,8 @@ function itemHTML(d) {
     <button class="history-item" data-resi="${d.resi}">
       <div class="history-top"><strong>${d.resi}</strong><span class="status-badge ${tiba ? 'ok' : ''}">${tiba ? 'Tiba' : 'Diproses'}</span></div>
       <p>${d.komoditas}, ${d.berat.toLocaleString('id-ID')} kg · ${escapeHTML(d.asal)} ke ${escapeHTML(d.tujuan)}</p>
-      <div class="history-meta"><span>${s.judul}</span><span>${rupiah(d.total)}</span></div>
+      <div class="history-progress" role="img" aria-label="Tahap ${Math.min(d.tahap, t.length)} dari ${t.length}"><span style="width:${Math.round((Math.min(d.tahap, t.length) / t.length) * 100)}%"></span></div>
+      <div class="history-meta"><span>${s.judul} · tahap ${Math.min(d.tahap, t.length)}/${t.length}</span><span>${rupiah(d.total)}</span></div>
     </button>`;
 }
 
