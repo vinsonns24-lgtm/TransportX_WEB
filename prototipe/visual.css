@@ -355,3 +355,28 @@ button.peta-titik::before { content: ""; position: absolute; inset: -9px; border
 /* riwayat: harga tidak terbelah */
 .history-meta { gap: 12px; }
 .history-meta span:last-child { white-space: nowrap; }
+
+/* ===================== PERBAIKAN REVIEW UI ===================== */
+/* Self-Packaging: kartu rincian, pelaksana, dan perlindungan bersusun, tidak bertumpuk di satu kartu */
+#self-cost { display: flex; flex-direction: column; gap: 16px; }
+#self-cost:empty { display: none; }
+
+/* truk sampai di kota tujuan: nama kota dinaikkan supaya tidak tertutup ikon truk */
+.lbl.atas.ada-truk { bottom: calc(100% + 16px); }
+.lbl.kanan.ada-truk { left: calc(100% + 16px); }
+
+/* unggah foto klaim */
+.label-teks { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+.upload {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px dashed #B6C2BC; border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+}
+.upload:hover { border-color: var(--primary); background: var(--primary-soft); }
+.upload svg { width: 26px; height: 26px; color: var(--primary); flex-shrink: 0; }
+.upload strong { display: block; font-size: 15px; color: var(--primary-dark); }
+.upload small { display: block; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.sr-only:focus-visible + .upload { outline: 2px solid var(--primary); outline-offset: 2px; }
+.sr-only, .field input.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

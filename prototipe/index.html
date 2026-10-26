@@ -37,7 +37,7 @@
         <form class="track-box" id="home-track">
           <label for="home-resi">Lacak kiriman tanpa login</label>
           <div class="track-row">
-            <input id="home-resi" type="text" placeholder="Masukkan no. resi, contoh TX-123456" autocomplete="off">
+            <input id="home-resi" type="text" placeholder="Contoh: TX-123456" autocomplete="off">
             <button class="btn btn-primary" type="submit">Lacak</button>
           </div>
         </form>
@@ -375,8 +375,12 @@
           <textarea id="klaim-desk" rows="3" placeholder="Contoh: 2 karung basah dan berbau apek saat dibuka"></textarea>
         </div>
         <div class="field">
-          <label for="klaim-foto">Foto barang saat tiba</label>
-          <input id="klaim-foto" type="file" accept="image/*">
+          <span class="label-teks">Foto barang saat tiba</span>
+          <input id="klaim-foto" class="sr-only" type="file" accept="image/*">
+          <label class="upload" for="klaim-foto">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+            <span><strong>Pilih foto</strong><small id="klaim-foto-nama">Belum ada foto</small></span>
+          </label>
         </div>
         <p class="hint" id="klaim-hint"></p>
       </div>

@@ -76,7 +76,7 @@ const KURIR_LOKAL = mitra('kurir-desa').nama;
 
 /* ---------- KATEGORI PENYIMPANAN ---------- */
 const RUANG = {
-  kering:  { nama: 'Gudang kering ber-AC', sewaPerKgHari: 25,  mitraId: 'lumbung' },
+  kering:  { nama: 'Gudang kering ber‑AC', sewaPerKgHari: 25,  mitraId: 'lumbung' },
   sejuk:   { nama: 'Ruang sejuk 13–15°C',  sewaPerKgHari: 250, mitraId: 'mgm-bosco' },
   chiller: { nama: 'Chiller 0–2°C',        sewaPerKgHari: 300, mitraId: 'mgm-bosco' }
 };
@@ -709,7 +709,7 @@ function updateSelfUI() {
   setStep(3, state.selectedExp ? 'done' : semua ? 'current' : '');
 
   const r = RUTE.find((x) => x.id === state.selectedExp);
-  $('#self-cost').innerHTML = r ? `<h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}${kartuPerlindungan()}${kartuPelaksana({ layanan: 'Self-Packaging', rute: r, tujuan: state.shipment.tujuan })}` : '';
+  $('#self-cost').innerHTML = r ? `<div class="cost-card"><h3>Rincian biaya</h3>${rincianHTML(hitungSelf(r).rincian, hitungSelf(r).total)}</div>${kartuPelaksana({ layanan: 'Self-Packaging', rute: r, tujuan: state.shipment.tujuan })}${kartuPerlindungan()}` : '';
 
   $('#btn-confirm-self').disabled = !(semua && r);
   $('#self-footer-note').textContent = !semua ? `Selesaikan langkah mengemas (${selesai}/${total}).` : !r ? 'Pilih ekspedisi untuk melanjutkan.' : '';
@@ -1014,6 +1014,7 @@ function renderKlaim() {
   $$('#klaim-jenis .opt').forEach((b) => b.classList.remove('active'));
   $('#klaim-desk').value = '';
   $('#klaim-foto').value = '';
+  $('#klaim-foto-nama').textContent = 'Belum ada foto';
 }
 
 function kirimKlaim() {
@@ -1088,6 +1089,7 @@ document.addEventListener('change', (e) => {
     $('#wa-nomor').hidden = !e.target.checked;
   }
   if (e.target.matches('#f-komoditas')) updateKomoditasHelp();
+  if (e.target.matches('#klaim-foto')) $('#klaim-foto-nama').textContent = e.target.files[0]?.name || 'Belum ada foto';
 });
 
 $('#btn-input-next').addEventListener('click', validasiInput);

@@ -158,7 +158,8 @@ function petaRute({ asal, tujuan, layanan = 'Full Managed', posisi = null }) {
   if (kT && !tujuanSama) {
     const [tx] = keXY(kT), [axx] = keXY(kA);
     const dekat = Math.abs(tx - axx) < 60;
-    lapis.push(`<span class="peta-titik tujuan" style="${persen(keXY(kT), v)}"><em class="lbl ${letakLabel(keXY(kT), v, dekat ? 'kanan' : 'atas')}">${escapeHTML(tujuan)}</em></span>`);
+    const truk = posisi === 'tujuan' ? ' ada-truk' : '';
+    lapis.push(`<span class="peta-titik tujuan" style="${persen(keXY(kT), v)}"><em class="lbl ${letakLabel(keXY(kT), v, dekat ? 'kanan' : 'atas')}${truk}">${escapeHTML(tujuan)}</em></span>`);
   }
   if (maju !== null) {
     const i = Math.min(Math.floor(maju), ruasList.length - 1);
