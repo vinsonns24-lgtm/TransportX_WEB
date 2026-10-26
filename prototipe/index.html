@@ -10,6 +10,7 @@
   <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="visual.css">
+  <link rel="stylesheet" href="toko.css">
 </head>
 <body>
 
@@ -32,6 +33,21 @@
         <button class="btn btn-accent btn-wide" data-go="input">
           <span>Kirim barang baru</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <button class="btn btn-jual btn-wide" data-go="jual">
+          <span>Jual kopi ke TransportX</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <button class="kopi-card" data-tab="toko">
+          <span class="kopi-card-ikon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="6.2" ry="9" transform="rotate(35 12 12)"/><path d="M8.6 6.8c3.2 2.4 3.4 7.6 6.8 10.4"/></svg></span>
+          <span class="kopi-card-isi">
+            <strong>Kopi Temanggung tersedia sepanjang tahun</strong>
+            <span>Robusta dan arabika yang sudah disortir dan di-grade SNI. Mulai Rp90.000/kg, kirim ke kota di Pulau Jawa.</span>
+            <em>Buka Toko Kopi</em>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </button>
 
         <form class="track-box" id="home-track">
@@ -71,7 +87,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </button>
 
-        <p class="proto-note">Prototipe untuk uji coba. Tidak ada uang yang keluar dan tidak ada barang yang benar-benar dikirim. Harga dan nama mitra masih contoh.</p>
+        <p class="proto-note">Prototipe untuk uji coba. Tidak ada uang yang keluar dan tidak ada barang yang benar-benar dikirim. Harga kopi, grade, dan nama mitra masih contoh.</p>
         <button class="btn-text" id="btn-panel-open">Panel moderator</button>
       </div>
     </section>
@@ -300,6 +316,62 @@
       </div>
     </section>
 
+    <!-- ========== 7B. TOKO KOPI ========== -->
+    <section class="screen" id="screen-toko" data-tabbar="true">
+      <header class="topbar">
+        <span class="title">Toko Kopi</span>
+      </header>
+      <div class="screen-body" id="toko-content"></div>
+    </section>
+
+    <!-- ========== 7C. DETAIL PRODUK & PESAN ========== -->
+    <section class="screen" id="screen-produk">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Detail kopi</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body" id="produk-content"></div>
+      <footer class="screen-footer">
+        <div class="total-row"><span>Total</span><strong id="produk-total"></strong></div>
+        <button class="btn btn-primary btn-wide" id="btn-toko-lanjut">Lanjut ke pembayaran</button>
+      </footer>
+    </section>
+
+    <!-- ========== 7D. LAPORAN QC ========== -->
+    <section class="screen" id="screen-qc">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Laporan QC</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body" id="qc-content"></div>
+    </section>
+
+    <!-- ========== 7E. JUAL KOPI (PETANI) ========== -->
+    <section class="screen" id="screen-jual">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Jual kopi</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body" id="jual-content"></div>
+      <footer class="screen-footer">
+        <button class="btn btn-primary btn-wide" id="btn-jual-kirim">Kirim untuk dicek mutunya</button>
+      </footer>
+    </section>
+
+    <!-- ========== 7F. HASIL CEK MUTU (PETANI) ========== -->
+    <section class="screen" id="screen-hasilqc">
+      <header class="topbar topbar-nav">
+        <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <span class="title">Hasil cek mutu</span>
+        <button class="icon-btn home-btn" data-home aria-label="Ke Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+      </header>
+      <div class="screen-body" id="hasilqc-body"><div id="hasil-content" class="hasil-content"></div></div>
+      <footer class="screen-footer" id="hasil-footer"></footer>
+    </section>
+
     <!-- ========== 8. RIWAYAT ========== -->
     <section class="screen" id="screen-riwayat" data-tabbar="true">
       <header class="topbar">
@@ -342,6 +414,12 @@
           <div class="resp-row"><span>Self-Packaging: kemasan dari pengirim</span><span>Pengirim, jika kemasan tidak sesuai panduan</span></div>
         </div>
         <p class="hint">Besar ganti rugi mengikuti ketentuan tiap mitra dan dihitung dari nilai barang yang Anda isi saat memesan. Nama mitra adalah contoh calon mitra, belum ada perjanjian kerja sama.</p>
+
+        <h2 class="section-label">Barang dari Toko TransportX</h2>
+        <div class="info-card">
+          <p>Kopi yang Anda beli di Toko TransportX, termasuk dari lapak petani, menjadi tanggungan <b>TransportX</b> sampai diterima, bukan tanggungan mitra.</p>
+          <p>Kalau kopi rusak, basah, beratnya kurang, atau grade tidak sesuai laporan QC, ajukan klaim lewat CS. Kami bandingkan dengan laporan QC dan foto sebelum kirim, lalu mengganti kopi atau mengembalikan uang.</p>
+        </div>
 
         <h2 class="section-label">Cara mengajukan klaim</h2>
         <ol class="steps">
@@ -476,6 +554,25 @@
         </div>
 
         <div class="q">
+          <label class="q-label">Kalau Anda pembeli kopi, mau beli lewat toko ini?</label>
+          <div class="opt-row" data-q="beliToko">
+            <button class="opt" data-val="Ya">Ya</button>
+            <button class="opt" data-val="Mungkin">Mungkin</button>
+            <button class="opt" data-val="Tidak">Tidak</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Kalau Anda petani, cara jual mana yang paling menarik?</label>
+          <div class="opt-row" data-q="caraJual">
+            <button class="opt" data-val="Jual ke TransportX">Jual ke TransportX</button>
+            <button class="opt" data-val="Titip jual">Titip jual</button>
+            <button class="opt" data-val="Titip simpan">Titip simpan</button>
+            <button class="opt" data-val="Tidak tertarik">Tidak tertarik</button>
+          </div>
+        </div>
+
+        <div class="q">
           <label class="q-label" for="fb-suka">Bagian mana yang paling Anda sukai?</label>
           <textarea id="fb-suka" rows="2" placeholder="Contoh: foto kondisi barang di setiap tahap"></textarea>
         </div>
@@ -551,6 +648,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
       Home
     </button>
+    <button class="tab" data-tab="toko">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="6.2" ry="9" transform="rotate(35 12 12)"/><path d="M8.6 6.8c3.2 2.4 3.4 7.6 6.8 10.4"/></svg>
+      Toko
+    </button>
     <button class="tab" data-tab="lacak">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
       Lacak
@@ -571,5 +672,6 @@
 <script src="script.js"></script>
 <script src="visual.js"></script>
 <script src="mitra.js"></script>
+<script src="toko.js"></script>
 </body>
 </html>

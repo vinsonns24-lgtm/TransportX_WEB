@@ -209,15 +209,19 @@ function petaCakupan() {
 const BIAYA_TRANSPORTX = ['Jasa cek mutu', 'Fee platform'];
 const pihakBiaya = (label) => (BIAYA_TRANSPORTX.some((p) => label.startsWith(p)) ? 'tx' : 'mitra');
 
-function grafikBiaya(rincian) {
-  const jumlah = { mitra: 0, tx: 0 };
-  rincian.forEach(([label, nilai]) => { jumlah[pihakBiaya(label)] += nilai; });
-  const total = jumlah.mitra + jumlah.tx;
+/* bagi (opsional, untuk pesanan toko): { petani, mitra, tx, nama: {petani, tx}, ket: {petani, mitra, tx} }
+   Tanpa bagi, pembagian dihitung dari label baris rincian (alur kirim). */
+function grafikBiaya(rincian, bagi = null) {
+  const jumlah = bagi ? { petani: bagi.petani || 0, mitra: bagi.mitra || 0, tx: bagi.tx || 0 } : { petani: 0, mitra: 0, tx: 0 };
+  if (!bagi) rincian.forEach(([label, nilai]) => { jumlah[pihakBiaya(label)] += nilai; });
+  const total = jumlah.petani + jumlah.mitra + jumlah.tx;
   if (!total) return '';
   const pct = (v) => Math.round((v / total) * 100);
+  const nama = bagi?.nama || {}, ket = bagi?.ket || {};
   const bagian = [
-    { id: 'mitra', nama: 'Diteruskan ke mitra', ket: 'gudang, ekspedisi, kurir, bahan kemasan', nilai: jumlah.mitra },
-    { id: 'tx', nama: 'Diterima TransportX', ket: 'fee platform dan jasa cek mutu', nilai: jumlah.tx }
+    { id: 'petani', nama: nama.petani || 'Diterima petani', ket: ket.petani || 'harga kopi untuk petani', nilai: jumlah.petani },
+    { id: 'mitra', nama: 'Diteruskan ke mitra', ket: ket.mitra || 'gudang, ekspedisi, kurir, bahan kemasan', nilai: jumlah.mitra },
+    { id: 'tx', nama: nama.tx || 'Diterima TransportX', ket: ket.tx || 'fee platform dan jasa cek mutu', nilai: jumlah.tx }
   ].filter((b) => b.nilai > 0);
   return `
     <div class="biaya-viz">

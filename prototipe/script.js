@@ -68,6 +68,26 @@ const MITRA = [
     dipakai: 'Semua kiriman Full Managed',
     tarif: 'Kopi Rp1.300/kg · rempah Rp1.500/kg · kakao Rp1.000/kg · buah Rp2.000/kg · sayur Rp2.500/kg',
     dasarTarif: 'Perkiraan harga karung goni, hermetic bag, styrofoam, dan kardus'
+  },
+  {
+    id: 'kt-sindoro', nama: 'Kelompok Tani Sindoro Makmur', label: 'Petani', jenis: 'petani', namaContoh: true,
+    kategori: 'Petani pemasok kopi robusta',
+    area: 'Desa Wonotirto, Bulu, Temanggung',
+    peran: 'Menjual green bean robusta ke TransportX, dan membuka lapak sendiri di Toko TransportX (titip jual).',
+    fasilitas: ['±40 anggota, kebun robusta 900–1.100 mdpl', 'Petik merah dan jemur di para-para'],
+    dipakai: 'Robusta untuk Toko TransportX',
+    tarif: 'Harga beli sesuai grade, contoh robusta Mutu 1 Rp85.000/kg',
+    dasarTarif: 'Tabel harga contoh TransportX per grade SNI 2907:2008'
+  },
+  {
+    id: 'kt-sumbing', nama: 'Kelompok Tani Lereng Sumbing', label: 'Petani', jenis: 'petani', namaContoh: true,
+    kategori: 'Petani pemasok kopi arabika',
+    area: 'Desa Tlahab, Kledung, Temanggung',
+    peran: 'Menjual green bean arabika ke TransportX untuk disortir, di-grade, lalu dijual di toko.',
+    fasilitas: ['Kebun arabika 1.300–1.600 mdpl', 'Proses full wash dan natural'],
+    dipakai: 'Arabika untuk Toko TransportX',
+    tarif: 'Harga beli sesuai grade, contoh arabika Mutu 1 Rp125.000/kg',
+    dasarTarif: 'Tabel harga contoh TransportX per grade SNI 2907:2008'
   }
 ];
 const mitra = (id) => MITRA.find((m) => m.id === id);
@@ -243,6 +263,53 @@ const KOTA = [
 ];
 const KOTA_ASAL = KOTA.filter((k) => k.asal);
 
+/* ---------- KOPI: GRADE, HARGA, DAN TOKO (HARGA CONTOH) ----------
+   Model bisnis v3: TransportX juga membeli kopi dari petani, menyortir dan memberi grade,
+   lalu menjualnya ke roastery, kafe, dan restoran. Petani juga bisa titip jual atau titip simpan.
+   Grade mengikuti SNI 2907:2008: nilai cacat per 300 g sampel, kadar air maksimal 12,5%. */
+const KADAR_AIR_MAKS = 12.5;
+const GRADE_SNI = [
+  { id: 'M1', nama: 'Mutu 1', dari: 0, maks: 11 },
+  { id: 'M2', nama: 'Mutu 2', dari: 12, maks: 25 },
+  { id: 'M3', nama: 'Mutu 3', dari: 26, maks: 44 },
+  { id: 'M4a', nama: 'Mutu 4a', dari: 45, maks: 60 },
+  { id: 'M4b', nama: 'Mutu 4b', dari: 61, maks: 80 },
+  { id: 'M5', nama: 'Mutu 5', dari: 81, maks: 150 },
+  { id: 'M6', nama: 'Mutu 6', dari: 151, maks: 225 },
+  { id: 'AS', nama: 'Asalan', dari: 226, maks: Infinity }
+];
+const grade = (id) => GRADE_SNI.find((g) => g.id === id);
+const gradeDariCacat = (n) => GRADE_SNI.find((g) => n <= g.maks);
+
+// HARGA CONTOH per kg: beli dari petani / jual di toko. jual null = tidak dijual, disortir dulu.
+const HARGA_KOPI = {
+  robusta: { M1: { beli: 85000, jual: 98000 }, M2: { beli: 80000, jual: 95000 }, M3: { beli: 76000, jual: 90000 }, AS: { beli: 70000, jual: null } },
+  arabika: { M1: { beli: 125000, jual: 145000 }, M2: { beli: 115000, jual: 135000 }, M3: { beli: 105000, jual: 125000 }, AS: { beli: 95000, jual: null } }
+};
+const KOMISI_TOKO = 0.05;                 // komisi toko 5% untuk produk yang dijual petani
+const TITIP_SIMPAN_PER_KG_BULAN = 500;    // HARGA CONTOH, tim belum menetapkan
+const TOKO_ASAL = GUDANG;                 // pesanan toko dikirim dari gudang mitra Semarang
+const LAYANAN_TOKO = 'Toko TransportX';
+
+// HARGA CONTOH: produk di Toko TransportX. penjual 'TransportX' atau id petani di MITRA.
+const PRODUK = [
+  { id: 'rob-m1', nama: 'Robusta Temanggung Mutu 1', jenis: 'robusta', grade: 'M1', cacat: 9, kadarAir: 11.6,
+    desa: 'Desa Wonotirto, Bulu', panen: 'Juli 2026', proses: 'Natural, petik merah', harga: 98000, stok: 1200, minKg: 10,
+    penjual: 'TransportX', tglQC: '14 Okt 2026' },
+  { id: 'rob-m2', nama: 'Robusta Temanggung Mutu 2', jenis: 'robusta', grade: 'M2', cacat: 19, kadarAir: 12.0,
+    desa: 'Desa Kemloko, Kranggan', panen: 'Agustus 2026', proses: 'Natural', harga: 95000, stok: 2500, minKg: 10,
+    penjual: 'TransportX', tglQC: '16 Okt 2026' },
+  { id: 'ara-m1', nama: 'Arabika Temanggung Mutu 1', jenis: 'arabika', grade: 'M1', cacat: 7, kadarAir: 11.4,
+    desa: 'Desa Tlahab, Kledung', panen: 'Juni 2026', proses: 'Full wash', harga: 145000, stok: 400, minKg: 5,
+    penjual: 'TransportX', tglQC: '10 Okt 2026' },
+  { id: 'ara-m2', nama: 'Arabika Temanggung Mutu 2', jenis: 'arabika', grade: 'M2', cacat: 22, kadarAir: 11.9,
+    desa: 'Desa Wonosari, Bulu', panen: 'Juli 2026', proses: 'Natural', harga: 135000, stok: 350, minKg: 5,
+    penjual: 'TransportX', tglQC: '12 Okt 2026' },
+  { id: 'lapak-sindoro', nama: 'Robusta Lereng Sindoro', jenis: 'robusta', grade: 'M2', cacat: 16, kadarAir: 12.1,
+    desa: 'Desa Wonotirto, Bulu', panen: 'Agustus 2026', proses: 'Natural, petik merah', harga: 93000, stok: 300, minKg: 10,
+    penjual: 'kt-sindoro', tglQC: '18 Okt 2026' }
+];
+
 /* ---------- STATE ---------- */
 const STORAGE_KEY = 'transportx.v2.history';
 
@@ -258,6 +325,8 @@ const state = {
   history: [],
   viewing: null,
   klaimJenis: null,
+  toko: { filter: 'semua', produk: null, kg: null, tujuan: 'Jakarta' },
+  jual: null,              // form "Jual kopi" petani, diisi di toko.js
   navStack: ['home']
 };
 
@@ -360,9 +429,9 @@ function baris_fee(subtotal) {
   return ['Fee platform', fee, fee === FEE_MINIMUM ? `Minimal ${rupiah(FEE_MINIMUM)}` : `2% dari ${rupiah(subtotal)}`];
 }
 
-function rincianHTML(rincian, total) {
+function rincianHTML(rincian, total, bagi = null) {
   return `
-    ${grafikBiaya(rincian)}
+    ${grafikBiaya(rincian, bagi)}
     <div class="breakdown">
       ${rincian.map(([l, v, ket]) => `<div><span>${escapeHTML(l)}${ket ? `<small>${escapeHTML(ket)}</small>` : ''}</span><strong>${rupiah(v)}</strong></div>`).join('')}
       <div class="breakdown-total"><span>Total</span><strong>${rupiah(total)}</strong></div>
@@ -388,6 +457,7 @@ function kartuPerlindungan() {
 const mitraRute = (rute) => mitra(rute.mitraId) || MITRA.find((m) => m.nama === rute.mitra);
 
 function kartuPelaksana(d) {
+  if (d.layanan === LAYANAN_TOKO) return kartuPelaksanaToko(d);
   // baris: [tugas, nama, jenis warna (tx | mitra | anda), label jenis, id mitra]
   const angkut = mitraRute(d.rute);
   const labelAngkut = d.rute.dingin ? 'Truk dingin' : 'Ekspedisi';
@@ -736,6 +806,27 @@ const METODE = [
   { id: 'ewallet', nama: 'E-wallet', ket: 'GoPay, OVO, DANA, ShopeePay' }
 ];
 
+/* metode bayar dan update WhatsApp (dipakai juga oleh pembayaran Toko) */
+function pilihanBayarHTML() {
+  return `
+    <h2 class="section-label">Metode pembayaran</h2>
+    <div class="choice-list" role="radiogroup" aria-label="Metode pembayaran">
+      ${METODE.map((m) => `
+        <button class="choice ${state.bayar.metode === m.id ? 'selected' : ''}" data-metode="${m.id}" role="radio" aria-checked="${state.bayar.metode === m.id}">
+          <span class="radio"></span>
+          <span class="choice-info"><strong>${m.nama}</strong><span>${m.ket}</span></span>
+        </button>`).join('')}
+    </div>
+
+    <div class="wa-card">
+      <label class="wa-toggle">
+        <input type="checkbox" id="wa-on" ${state.bayar.wa ? 'checked' : ''}>
+        <span><strong>Kirim update ke WhatsApp</strong><small>Foto dan status setiap tahap dikirim ke nomor Anda</small></span>
+      </label>
+      <input type="tel" id="wa-nomor" placeholder="Contoh: 0812 3456 7890" value="${escapeHTML(state.bayar.nomor)}" ${state.bayar.wa ? '' : 'hidden'}>
+    </div>`;
+}
+
 function renderBayar() {
   const d = state.draft;
   const s = state.shipment;
@@ -756,22 +847,7 @@ function renderBayar() {
 
     ${kartuPelaksana({ ...d, simpan: komoditas().simpan, tujuan: s.tujuan })}
 
-    <h2 class="section-label">Metode pembayaran</h2>
-    <div class="choice-list" role="radiogroup" aria-label="Metode pembayaran">
-      ${METODE.map((m) => `
-        <button class="choice ${state.bayar.metode === m.id ? 'selected' : ''}" data-metode="${m.id}" role="radio" aria-checked="${state.bayar.metode === m.id}">
-          <span class="radio"></span>
-          <span class="choice-info"><strong>${m.nama}</strong><span>${m.ket}</span></span>
-        </button>`).join('')}
-    </div>
-
-    <div class="wa-card">
-      <label class="wa-toggle">
-        <input type="checkbox" id="wa-on" ${state.bayar.wa ? 'checked' : ''}>
-        <span><strong>Kirim update ke WhatsApp</strong><small>Foto dan status setiap tahap dikirim ke nomor Anda</small></span>
-      </label>
-      <input type="tel" id="wa-nomor" placeholder="Contoh: 0812 3456 7890" value="${escapeHTML(state.bayar.nomor)}" ${state.bayar.wa ? '' : 'hidden'}>
-    </div>
+    ${pilihanBayarHTML()}
 
     ${kartuPerlindungan()}
 
@@ -788,7 +864,15 @@ function bayar() {
     }
   }
   const d = state.draft;
-  const data = {
+  const data = d.jenis === 'toko' ? {
+    resi: 'TX-' + String(Math.floor(100000 + Math.random() * 900000)),
+    ...dataPesananToko(d),
+    total: d.total,
+    metode: METODE.find((m) => m.id === state.bayar.metode).nama,
+    wa: state.bayar.wa ? state.bayar.nomor : null,
+    tahap: 1,
+    waktu: new Date()
+  } : {
     resi: 'TX-' + String(Math.floor(100000 + Math.random() * 900000)),
     komoditas: komoditas().nama,
     simpan: komoditas().simpan,
@@ -821,7 +905,17 @@ function batalPesanan() {
 }
 
 /* ---------- LACAK: TAHAPAN, FOTO, PENANGGUNG JAWAB ---------- */
+/* hasil cek mutu simulasi untuk produk kering (kopi, kakao, rempah), tetap sama untuk satu resi */
+function gradeCatatan(d) {
+  if (d.simpan !== 'kering') return null;
+  const angkaResi = Number(String(d.resi).replace(/\D/g, '')) || 0;
+  const cacat = 12 + (angkaResi % 14);                 // 12–25: Mutu 2
+  const air = (11.4 + (angkaResi % 9) / 10).toFixed(1).replace('.', ',');
+  return `${gradeDariCacat(cacat).nama} · nilai cacat ${cacat} · kadar air ${air}%`;
+}
+
 function tahapan(d) {
+  if (d.layanan === LAYANAN_TOKO) return tahapanToko(d);
   const ruang = ruangKecil(d.simpan);
   // nama mitra + perannya, supaya jelas mana gudang dan mana ekspedisi
   const gudang = `${namaGudang(d.simpan)}${d.simpan === 'kering' ? '' : ' (cold storage)'}`;
@@ -834,7 +928,7 @@ function tahapan(d) {
       d.serah === 'jemput'
         ? { judul: 'Dijemput kurir lokal', oleh: kurir, lokasi: d.asal }
         : { judul: 'Diantar ke gudang mitra', oleh: 'Pengirim', lokasi: `Menuju ${namaGudang(d.simpan)}` },
-      { judul: 'Diterima dan dicek mutunya', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: namaGudang(d.simpan), foto: 'Foto saat diterima: timbang dan cek kondisi' },
+      { judul: 'Diterima dan dicek mutunya', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: namaGudang(d.simpan), catatan: gradeCatatan(d), grade: true, foto: 'Foto saat diterima: timbang dan cek kondisi' },
       { judul: 'Dikemas sesuai panduan', oleh: 'Petugas QC TransportX', tanggungan: gudang, lokasi: namaGudang(d.simpan), foto: 'Foto setelah dikemas' },
       { judul: `Disimpan di ${ruang}`, oleh: gudang, lokasi: namaGudang(d.simpan), catatan: 'Suhu dicatat alat pencatat suhu' },
       { judul: `Dalam perjalanan (${d.rute.moda.toLowerCase()})`, oleh: angkut, lokasi: `Menuju ${d.tujuan}` },
@@ -903,7 +997,7 @@ function renderRingkasan(d) {
             <div class="tl-body">
               <strong>${s.judul}</strong>
               <small>${n === 1 ? jam + ' · ' : ''}${s.oleh}${s.lokasi && tampil ? ' · ' + escapeHTML(s.lokasi) : ''}</small>
-              ${tampil && s.catatan ? `<small>${s.catatan}</small>` : ''}
+              ${tampil && s.catatan ? `<small class="${s.grade ? 'tl-grade' : ''}">${s.catatan}</small>` : ''}
               ${tampil && s.foto ? fotoHTML(s.foto) : ''}
             </div>
           </li>`;
@@ -1009,7 +1103,9 @@ function renderKlaim() {
     <div><span>No. resi</span><strong>${d.resi}</strong></div>
     <div><span>Nilai barang</span><strong>${rupiah(d.nilai)}</strong></div>
     <div class="span2"><span>Tahap sekarang dan penanggung jawab</span><strong>${s.judul} · ${s.oleh}</strong></div>`;
-  $('#klaim-hint').textContent = 'Ganti rugi mengikuti ketentuan mitra yang bertanggung jawab di tahap kejadian.';
+  $('#klaim-hint').textContent = d.layanan === LAYANAN_TOKO
+    ? 'Kopi dari Toko TransportX: TransportX yang mengganti, bukan mitra. CS membandingkan dengan laporan QC dan foto sebelum kirim.'
+    : 'Ganti rugi mengikuti ketentuan mitra yang bertanggung jawab di tahap kejadian.';
   state.klaimJenis = null;
   $$('#klaim-jenis .opt').forEach((b) => b.classList.remove('active'));
   $('#klaim-desk').value = '';
@@ -1156,6 +1252,8 @@ function respondenBaru() {
   state.selectedExp = null; state.viewing = null; state.draft = null;
   state.managed = { prioritas: 'hemat', serah: 'antar' };
   state.bayar = { metode: 'va', wa: true, nomor: '' };
+  state.toko = { filter: 'semua', produk: null, kg: null, tujuan: 'Jakarta' };
+  state.jual = null;
   simpanKeStorage();
   ['#f-berat', '#f-nilai', '#home-resi', '#tab-resi'].forEach((s) => { $(s).value = ''; });
   $$('#berat-chips .chip').forEach((c) => c.classList.remove('active'));
@@ -1198,6 +1296,8 @@ function renderPanel() {
           <span class="fb-tag">${escapeHTML(r.peran)}</span><span class="fb-tag">Mudah ${r.mudah}/5</span>
           <span class="fb-tag">Membantu ${r.membantu}/5</span><span class="fb-tag">${escapeHTML(r.minat)}</span>
           <span class="fb-tag">Harga: ${escapeHTML(r.harga)}</span>
+          ${r.beliToko ? `<span class="fb-tag">Beli lewat toko: ${escapeHTML(r.beliToko)}</span>` : ''}
+          ${r.caraJual ? `<span class="fb-tag">Cara jual: ${escapeHTML(r.caraJual)}</span>` : ''}
         </div>${q}
       </div>`;
   }).join('');
@@ -1216,9 +1316,11 @@ function unduhCSV(namaFile, baris) {
 function exportData() {
   if (!fb.list.length) return toast('Belum ada data untuk diunduh.');
   const baris = [['No', 'Waktu', 'Inisial', 'Usia', 'Jenis kelamin', 'Peran', 'Pernah barang rusak', 'Layanan dicoba',
-    'Kemudahan (1-5)', 'Kebermanfaatan (1-5)', 'Minat pakai', 'Persepsi harga', 'I like', 'I wish', 'Questions', 'Ideas']];
+    'Kemudahan (1-5)', 'Kebermanfaatan (1-5)', 'Minat pakai', 'Persepsi harga', 'Mau beli lewat toko', 'Cara jual paling menarik',
+    'I like', 'I wish', 'Questions', 'Ideas']];
   fb.list.slice().reverse().forEach((r, i) => baris.push([i + 1, new Date(r.waktu).toLocaleString('id-ID'), r.nama, r.usia,
-    r.gender, r.peran, r.pernahRusak, r.layanan, r.mudah, r.membantu, r.minat, r.harga, r.suka, r.kritik, r.tanya, r.ide]));
+    r.gender, r.peran, r.pernahRusak, r.layanan, r.mudah, r.membantu, r.minat, r.harga, r.beliToko || '-', r.caraJual || '-',
+    r.suka, r.kritik, r.tanya, r.ide]));
   unduhCSV(`TransportX_v2_TesPasar_${fb.list.length}responden.csv`, baris);
   toast('Data diunduh.');
 }
